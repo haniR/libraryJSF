@@ -1,0 +1,89 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+    <style>
+        .layout-wrapper .topbar-items > li .topbar-icon{
+            font-size: 30px!important;
+            margin-left: 10px!important;
+        }
+        .layout-wrapper .topbar-items > li.profile-item .profile-image{
+            background: none!important;
+        }
+    </style>
+    <h:form id="mainForm">
+        <div class="topbar clearfix">
+            <div class="topbar-left">            
+                <div class="logo"></div>
+            </div>
+
+            <div class="topbar-right">
+                <a id="menu-button" href="#">
+                    <i></i>
+                </a>
+
+                <a id="topbar-menu-button" href="#">
+                    <i class="material-icons">&#xE5D4;</i>
+                </a>
+
+                <ul class="topbar-items fadeInDown animated">
+                    <li class="profile-item">
+                        <a href="#">
+                            <p:graphicImage cache="false" 
+                                            name="images/defaultavatar.jpg" library="ultima-layout"
+                                            style="border-radius: 20px;
+                                            height: 40px;
+                                            width: 40px;
+                                            margin-top: -5px;"
+                                            class="profile-image" alt="User Image"/>
+                            <span class="topbar-item-name">Username</span>
+                        </a>
+
+                        <ul class="ultima-menu animated">
+                            <li role="menuitem">
+                                <p:commandLink class="ripplelink" onclick="showLoading()" ajax="false">
+                                    <i class="material-icons">&#xE7FD;</i>
+                                    <span>Profile - </span>
+                                </p:commandLink>
+                            </li>
+                            <li role="menuitem">
+                                <p:commandLink class="ripplelink">                     
+                                    <i class="fa fa-key"></i>
+                                    <span>Change Password</span>
+                                </p:commandLink>
+                            </li>
+                            <li role="menuitem">
+                                <p:commandLink class="ripplelink">
+                                    <i class="material-icons">&#xE8AC;</i>
+                                    <span>Logout</span>
+                                </p:commandLink>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a >
+                            <i class="fa fa-globe topbar-icon material-icons"></i>
+                            <span class="topbar-item-name">Language</span>
+                        </a>
+                        <ul class="ultima-menu animated">
+                            <li role="menuitem" >
+                                <p:commandLink>
+                                    <h:outputText value="English" />
+                                </p:commandLink>
+                            </li>
+                            <li role="menuitem" >
+                                <p:commandLink>
+                                    <h:outputText value="العربية" />
+                                </p:commandLink>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

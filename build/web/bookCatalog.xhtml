@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Book Catalog Page</h1>
+
+                    <h:form id="form1">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="authors"/>
+                            <p:selectOneMenu id="city" value="#{listBean.author}" effect="fold" editable="false">
+                                <p:ajax event="change" update="@form" />
+                                <f:selectItem  itemValue="" itemLabel="Select One"/>
+                                <f:selectItems value="#{listBean.authors}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="titles"/>
+                            <p:selectOneMenu id="title" value="#{listBean.title}" effect="fold" editable="false">
+                                <p:ajax event="change" update="@form" />
+                                <f:selectItem  itemValue="" itemLabel="Select One"/>
+                                <f:selectItems value="#{listBean.titles}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="genre"/>
+                            <p:selectOneMenu id="genre" value="#{listBean.genre}" effect="fold" editable="false">
+                                <p:ajax event="change" update="@form" />
+                                <f:selectItem  itemValue="" itemLabel="Select One"/>
+                                <f:selectItems value="#{listBean.genres}"/>
+                            </p:selectOneMenu>
+
+                        </p:panelGrid>
+                        <p:commandButton actionListener="#{bookBean.filter(listBean.author, listBean.title, listBean.genre)}" value="Filter" update=":tableForm" />
+
+                        <h:outputText value="#{listBean.author}"/>
+
+                    </h:form>
+                    <h:form id="tableForm">
+
+                        <p:dataTable var="allBook" value="#{bookBean.allBooks}" id="data2" selection=""  >
+
+
+                            <p:column headerText="Id">
+                                <h:outputText value="#{allBook.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Name">
+                                <h:outputText value="#{allBook.name}" />
+                            </p:column>
+                            <p:column headerText="ISBN">
+                                <h:outputText value="#{allBook.isbn}" />
+                            </p:column>
+                            <p:column headerText="Number Of Pages">
+                                <h:outputText value="#{allBook.numberOfPages}" />
+                            </p:column>
+                            <p:column headerText="Qunatity">
+                                <h:outputText value="#{allBook.qauantity}" />
+                            </p:column>
+                            <p:column headerText="Title">
+                                <h:outputText value="#{allBook.title}" />
+                            </p:column>
+                            <p:column headerText="Genre">
+                                <h:outputText value="#{allBook.genre}" />
+                            </p:column>
+                            <p:column headerText="Author">
+                                <h:outputText value="#{allBook.author}" />
+                            </p:column>
+                            <p:column headerText="Wish List ?">
+                                <p:commandButton actionListener="#{bookBean.addToWishList(loginBean.loggedIn_user.id, allBook.id)}"  value="Add" update=":wishTableForm" />
+                            </p:column>
+
+
+                        </p:dataTable>
+                    </h:form>
+                    <h1> Your  Wish List </h1>
+                    <h:form id="wishTableForm">
+
+                        <p:dataTable var="wishBook" value="#{bookBean.getWishListBooks(loginBean.loggedIn_user.id)}" id="data2" >
+
+
+                            <p:column headerText="Id">
+                                <h:outputText value="#{wishBook.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Name">
+                                <h:outputText value="#{wishBook.name}" />
+                            </p:column>
+                            <p:column headerText="ISBN">
+                                <h:outputText value="#{wishBook.isbn}" />
+                            </p:column>
+                            <p:column headerText="Number Of Pages">
+                                <h:outputText value="#{wishBook.numberOfPages}" />
+                            </p:column>
+                            <p:column headerText="Qunatity">
+                                <h:outputText value="#{wishBook.qauantity}" />
+                            </p:column>
+                            <p:column headerText="Title">
+                                <h:outputText value="#{wishBook.title}" />
+                            </p:column>
+                            <p:column headerText="Genre">
+                                <h:outputText value="#{wishBook.genre}" />
+                            </p:column>
+                            <p:column headerText="Author">
+                                <h:outputText value="#{wishBook.author}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <p:button outcome="bookCatalog" value="bookCatalog" style="display:inline-block;margin-top:5px"/>
+                </div>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

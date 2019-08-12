@@ -1,0 +1,105 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+    <style>
+        .search-input {
+            padding: 25px 16px 8px 16px;
+            text-align: center;
+            position: relative;
+        }
+        .search-input input::-moz-placeholder {
+            color: #757575!important;
+        }
+        .search-input .ui-inputfield.ui-inputtext.ui-widget.ui-state-default.ui-corner-all.ui-state-focus,
+        .search-input .ui-inputfield.ui-inputtext.ui-widget.ui-state-default.ui-corner-all.ui-state-hover,
+        .search-input .ui-inputfield.ui-inputtext.ui-widget.ui-state-default.ui-corner-all.ui-state-highlight{
+            border:none;
+            border-bottom:2px solid #757575;
+        }
+        .search-input input::-webkit-input-placeholder {
+            color: #757575!important;
+        }
+        .search-input input {
+            padding: 10px 30px 10px 15px;
+            background-color: transparent;
+            border:none;
+            border-bottom:1px solid #757575;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            color: #757575;
+            box-sizing: border-box;
+            width: 100%;
+
+        }
+        .search-input {
+            text-align: center;
+        }
+
+        .search-input .fa-search {
+            position: absolute;
+            right: 30px;
+            top: 35px;
+            font-size: 15px;
+            color: #a8acb1;
+        }
+    </style>
+    <h:form id="menuform"> 
+        <div class="layout-menu #{guestPreferences.menuClass}">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <ui:fragment rendered="false">
+                        <div class="profile">
+                            <div class="profile-image"></div>
+                            <a id="profile-options" href="#">
+                                <span class="profile-name">Hani Yaaqbe</span>
+                                <i class="material-icons">&#xE313;</i>
+                            </a>
+                        </div>
+
+                        <ul id="profile-menu" class="ultima-menu">
+
+                            <li role="menuitem">
+                                <p:commandLink class="ripplelink">
+                                    <i class="material-icons">&#xE8AC;</i>
+                                    <span>Logout</span>
+                                </p:commandLink>
+                            </li>
+
+                        </ul>
+                    </ui:fragment>
+                    <h:form>
+                        <div class="search-input">
+
+                            <p:inputText   placeholder="Search Screen"  id="search-item" style="background: transparent">
+                                <p:ajax  update=":menuform"  event="keyup" delay="500"/>
+                                <p:defaultCommand target="enter"   />
+                            </p:inputText>
+                            <i class="fa fa-search" style="color: #757575"></i>
+                            <p:commandButton update=":menuform" id="enter" style="display: none">
+                            </p:commandButton>
+                        </div>
+                    </h:form>
+                    <pu:menu widgetVar="me">
+                        <p:menuitem id="um_dashboard" value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
+                        <p:submenu  label="Menu 1"  icon="fa fa-circle">
+                            <p:menuitem value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
+                            <p:menuitem value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
+                            <p:submenu  label="Menu 1"  icon="fa fa-circle">
+                                <p:menuitem value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
+                                <p:menuitem value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
+                            </p:submenu>
+                        </p:submenu>
+                    </pu:menu>
+
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

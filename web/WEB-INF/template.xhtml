@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-explode=1.0, maximum-explode=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta name="theme-color" content="#{guestPreferences.themeColors[guestPreferences.theme]}" />
+        </f:facet>
+        <title></title>
+        <h:outputScript name="js/nanoscroller.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/swipe.js" library="ultima-layout" />
+        <style>
+            .ui-dialog,.ui-dialog-content{
+                overflow: visible!important;
+            }
+            a:hover{
+                cursor: pointer;
+            }
+            .ui-dialog-header{
+                background: red!important;            }
+            .layout-wrapper .topbar .logo{
+                height: 48px!important
+            }
+            .layout-wrapper .topbar .topbar-left{
+                padding: 15px!important;
+            }
+            .form-table{
+                width: 100%;
+            }
+            .block{
+                position: fixed;
+                width: 100%;
+                height: 100%;
+            }
+            .ui-blockui-content.ui-widget.ui-widget-content.ui-corner-all.ui-helper-hidden.ui-shadow{
+                background: transparent!important;
+                border: none!important;
+                -webkit-box-shadow: none!important;
+                -moz-box-shadow: none!important;
+                box-shadow: none!important;
+            }
+            .form-table tr{
+                height: 50px;
+            }
+            .full-width{
+                width: 100%;
+            }
+            .text-center{
+                text-align: center;
+            }
+            .text-left{
+                text-align: left;
+            }
+            .text-right{
+                text-align:right;
+            }
+
+            .no-border-table tr,.no-border-table td,.no-border-table th{
+                border-width:0px !important;
+            }
+            body .ui-datatable tbody tr td.ui-state-highlight .ui-inputfield{
+                color:black;
+            }
+            .ui-inputfield{
+                border-bottom: solid 1px rgba(0,0,0,0.3)!important;
+            }
+            body .ui-datatable .ui-datatable-header .ui-inputfield, body .ui-datatable .ui-datatable-footer .ui-inputfield{
+                color: black!important;
+            }
+            .ui-icon-closethick{
+                color: white!important;
+            }
+            .ui-selectonemenu{
+                min-width: 135px!important;
+            }
+            body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item{
+                white-space: inherit!important;                width: 135px!important;
+
+            }
+            .old{
+                background-color:red;
+                background-image:none;
+            }
+            .row-red td{
+                background-color: #f2dede;
+            }
+            .row-green td{
+                background-color: #dff0d8;
+            }
+            .alert{
+                padding: 15px;
+                margin-bottom: 20px;
+                border: 1px solid transparent;
+                border-radius: 4px;
+            }
+            .alert-info{
+                color: #31708f;
+                background-color: #d9edf7;
+                border-color: #bce8f1;
+            }
+            .alert-warning{
+                color: #8a6d3b;
+                background-color: #fcf8e3;
+                border-color: #faebcc;
+            }
+            .non-visible{
+                visibility: hidden;
+            }
+        </style>
+        <script>
+
+            function goTo(link) {
+                window.location.href = '#{request.contextPath}' + link;
+            }
+            function showLoading() {
+            }
+            function hideLoading() {
+            }
+        </script>
+        <ui:insert name="head"/>
+    </h:head>
+
+
+    <h:body id="body" styleClass="main-body #{guestPreferences.compact ? 'layout-compact' : null}">
+        <h:form>
+            <p:blockUI widgetVar="blockz" styleClass="block" block=":body">
+                <p:graphicImage library="ultima-layout/images" name="loading.svg"
+                                width="200" height="200" style="position: fixed;left: 43%;top:30%;"
+                                />
+            </p:blockUI>
+        </h:form>
+        <p:growl id="growl" for="mainNotificationFor" showDetail="true">
+            <p:autoUpdate />
+        </p:growl>
+
+        <p:growl id="growl2" showDetail="true">
+            <p:autoUpdate />
+        </p:growl>
+
+        <div class="layout-wrapper #{guestPreferences.menuLayout}">
+            <ui:include src="./topbar.xhtml" />
+            <ui:include src="./menu.xhtml" />
+
+            <div class="layout-main">
+                <ui:insert name="content"/>
+            </div>
+        </div>
+
+        <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+            <f:facet name="start">
+                <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+                <div class="ajax-overlay" style="position: fixed;top:0;left:0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.5);z-index: 99999;">
+                    <p:graphicImage library="ultima-layout/images" name="loading.svg"
+                                    width="200" height="200" style="position: fixed;left: 43%;top:30%;"
+                                    />
+                </div>
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+
+
+        <h:outputStylesheet name="css/nanoscroller.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+        <script>
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#03A9F4', '#E91E63', '#4CAF50', '#FFC107'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#F5F5F5',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    borderWidth: 0.1,
+                    borderColor: 'bdbdbd',
+                    rendererOptions: {
+                        textColor: '#666F77'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+
+            function skinBar() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#4CAF50', '#FFC107'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#F5F5F5',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    borderWidth: 0.1,
+                    borderColor: 'bdbdbd',
+                    rendererOptions: {
+                        textColor: '#666F77'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    renderer: $.jqplot.BarRenderer,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+
+            function skinArea() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#FFC107', '#4CAF50'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#F5F5F5',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    borderWidth: 0.1,
+                    borderColor: 'bdbdbd',
+                    rendererOptions: {
+                        textColor: '#666F77'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+
+            function skinBubble() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#4CAF50', '#FFC107'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#F5F5F5',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#666F77'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    renderer: $.jqplot.BubbleRenderer,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+
+            function skinZoom() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#4CAF50', '#FFC107'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#F5F5F5',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#666F77'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+
+            function skinPie() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#03A9F4', '#E91E63', '#4CAF50', '#FFC107', '#AEC107', '#DDC197', '#8c5b12', '#ff5722'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#F5F5F5',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#666F77',
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    renderer: $.jqplot.PieRenderer,
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+
+            function skinDonut() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#03A9F4', '#E91E63', '#4CAF50', '#FFC107'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#F5F5F5',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#666F77',
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    renderer: $.jqplot.DonutRenderer,
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+
+            function skinBarAndLine() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#03A9F4', '#FFC107'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#F5F5F5',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    borderWidth: 0.1,
+                    borderColor: 'bdbdbd',
+                    rendererOptions: {
+                        textColor: '#666F77'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 5,
+                    renderer: $.jqplot.BarRenderer,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+
+            function skinMeterGauge() {
+                this.cfg.title = '';
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 5,
+                    renderer: $.jqplot.MeterGaugeRenderer,
+                    rendererOptions: {
+                        shadow: false,
+                        min: 100,
+                        max: 800,
+                        intervals: [200, 300, 400, 500, 600, 700, 800],
+                        intervalColors: ['#03A9F4', '#E91E63', '#4CAF50', '#FFC107', '#03A9F4', '#E91E63', '#4CAF50']
+                    }
+                }
+            }
+
+            function skinMultiAxis() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#4CAF50', '#FFC107'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#F5F5F5',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    borderWidth: 0.1,
+                    borderColor: 'bdbdbd',
+                    rendererOptions: {
+                        textColor: '#666F77'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    renderer: $.jqplot.BarRenderer,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+        </script>
+        <script>
+
+            function convertToCode(source, destId) {
+                var dest = document.getElementById(destId);
+                var sourceValue;
+                if (typeof source == "string") {
+                    sourceValue = document.getElementById(source);
+                } else {
+                    sourceValue = source.value;
+                }
+
+                var destValue = sourceValue.replace(/[^a-zA-Z0-9\s_]+/, "");
+                destValue = destValue.replace(" ", "_");
+                destValue = destValue.toUpperCase();
+                dest.value = destValue.substring(0, 31);
+            }
+
+        </script>
+
+    </h:body>
+
+</html>
