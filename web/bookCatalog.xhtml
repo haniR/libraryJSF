@@ -12,103 +12,69 @@
                     <h1>Book Catalog Page</h1>
 
                     <h:form id="form1">
-                        <p:panelGrid columns="2">
-                            <p:outputLabel value="authors"/>
-                            <p:selectOneMenu id="city" value="#{listBean.author}" effect="fold" editable="false">
+                        <p:panelGrid columns="7" styleClass="ui-noborder">
+                            <p:outputLabel value="authors" style="color: #0277BD;"/>
+                            <p:selectOneMenu id="city" value="#{listBean.author}" effect="fold" editable="false" >
                                 <p:ajax event="change" update="@form" />
-                                <f:selectItem  itemValue="" itemLabel="Select One"/>
+                                <f:selectItem  itemValue="" itemLabel="Select One" />
                                 <f:selectItems value="#{listBean.authors}"/>
                             </p:selectOneMenu>
-                            <p:outputLabel value="titles"/>
+                            <p:outputLabel value="titles" style="color: #0277BD;"/>
                             <p:selectOneMenu id="title" value="#{listBean.title}" effect="fold" editable="false">
                                 <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
                                 <f:selectItems value="#{listBean.titles}"/>
                             </p:selectOneMenu>
-                            <p:outputLabel value="genre"/>
+                            <p:outputLabel value="genre" style="color: #0277BD;" />
                             <p:selectOneMenu id="genre" value="#{listBean.genre}" effect="fold" editable="false">
                                 <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
                                 <f:selectItems value="#{listBean.genres}"/>
                             </p:selectOneMenu>
+                            <p:commandButton actionListener="#{bookBean.filter(listBean.author, listBean.title, listBean.genre)}" value="Filter" update=":tableForm" style="background-color:#0277BD;" />
 
                         </p:panelGrid>
-                        <p:commandButton actionListener="#{bookBean.filter(listBean.author, listBean.title, listBean.genre)}" value="Filter" update=":tableForm" />
 
-                        <h:outputText value="#{listBean.author}"/>
 
                     </h:form>
-                    <h:form id="tableForm">
+                    <h:form id="tableForm" style="margin-top: 12px;">
 
                         <p:dataTable var="allBook" value="#{bookBean.allBooksForUser}" id="data2" >
 
 
-                            <p:column headerText="Id">
+                            <p:column headerText="Id" style="color: #FF5722">
                                 <h:outputText value="#{allBook.id}"/>
                             </p:column>
 
-                            <p:column headerText="Name">
+                            <p:column headerText="Name" style="color: #0277BD">
                                 <h:outputText value="#{allBook.name}" />
                             </p:column>
-                            <p:column headerText="ISBN">
+                            <p:column headerText="ISBN" style="color: #0277BD">
                                 <h:outputText value="#{allBook.isbn}" />
                             </p:column>
-                            <p:column headerText="Number Of Pages">
+                            <p:column headerText="Number Of Pages" style="color: #0277BD">
                                 <h:outputText value="#{allBook.numberOfPages}" />
                             </p:column>
-                            <p:column headerText="Qunatity">
+                            <p:column headerText="Qunatity" style="color: #0277BD">
                                 <h:outputText value="#{allBook.qauantity}" />
                             </p:column>
-                            <p:column headerText="Title">
+                            <p:column headerText="Title" style="color: #0277BD">
                                 <h:outputText value="#{allBook.title}" />
                             </p:column>
-                            <p:column headerText="Genre">
+                            <p:column headerText="Genre" style="color: #0277BD">
                                 <h:outputText value="#{allBook.genre}" />
                             </p:column>
-                            <p:column headerText="Author">
+                            <p:column headerText="Author" style="color: #0277BD">
                                 <h:outputText value="#{allBook.author}" />
                             </p:column>
-                            <p:column headerText="Wish List ?">
-                                <p:commandButton actionListener="#{bookBean.addToWishList(loginBean.loggedIn_user.id, allBook.id)}"  value="Add" update=":wishTableForm :tableForm" />
+                            <p:column headerText="Wish List ?" style="color: #F44336">
+                                <p:commandButton actionListener="#{bookBean.addToWishList(loginBean.loggedIn_user.id, allBook.id)}" 
+                                                 value="Add" update="data2"  style="background-color: #FF5722 " />
                             </p:column>
 
 
                         </p:dataTable>
                     </h:form>
-                    <h1> Your  Wish List </h1>
-                    <h:form id="wishTableForm">
-
-                        <p:dataTable var="wishBook" value="#{bookBean.getWishListBooks(loginBean.loggedIn_user.id)}" id="data2" >
-
-
-                            <p:column headerText="Id">
-                                <h:outputText value="#{wishBook.id}"/>
-                            </p:column>
-
-                            <p:column headerText="Name">
-                                <h:outputText value="#{wishBook.name}" />
-                            </p:column>
-                            <p:column headerText="ISBN">
-                                <h:outputText value="#{wishBook.isbn}" />
-                            </p:column>
-                            <p:column headerText="Number Of Pages">
-                                <h:outputText value="#{wishBook.numberOfPages}" />
-                            </p:column>
-                            <p:column headerText="Qunatity">
-                                <h:outputText value="#{wishBook.qauantity}" />
-                            </p:column>
-                            <p:column headerText="Title">
-                                <h:outputText value="#{wishBook.title}" />
-                            </p:column>
-                            <p:column headerText="Genre">
-                                <h:outputText value="#{wishBook.genre}" />
-                            </p:column>
-                            <p:column headerText="Author">
-                                <h:outputText value="#{wishBook.author}" />
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                    <p:button outcome="bookCatalog" value="bookCatalog" style="display:inline-block;margin-top:5px"/>
                 </div>
             </div>
         </div>

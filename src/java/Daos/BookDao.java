@@ -70,6 +70,23 @@ public class BookDao {
 
     }
 
+    public void removeFromWishList(int userId, int bookId) {
+        try {
+            String sql = "DELETE FROM library.wishlist WHERE userid=? and bookId=?";
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, bookId);
+            preparedStatement.execute();
+
+        } catch (Exception e) {
+
+        }
+    }
+
     public ArrayList<Book> getAllBooksFilterizationForRent(int userId, String author, String title, String genre) {
         try {
             System.out.println("author = " + author + " title = " + title);
@@ -166,7 +183,7 @@ public class BookDao {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
                     + "user=root&password=root");
-            String sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId='" + userId + "' ); ";
+            String sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId='" + userId + "' ) and b.quantity >0 ; ";
 
             statement = con.createStatement();
             resultSet = statement.executeQuery(sql);
@@ -193,12 +210,13 @@ public class BookDao {
             return null;
         }
     }
+
     public ArrayList<Book> getAllBooksNotWishedAndRented(int userId) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
                     + "user=root&password=root");
-            String sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.wishlist as w  where w.userId="+userId+"  ) and b.id not in ( select bookId from library.rent as r  where r.userId="+userId+") ";
+            String sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.wishlist as w  where w.userId=" + userId + "  ) and b.id not in ( select bookId from library.rent as r  where r.userId=" + userId + ") and b.quantity > 0 ";
 
             statement = con.createStatement();
             resultSet = statement.executeQuery(sql);
@@ -272,7 +290,7 @@ public class BookDao {
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setInt(2, bookId);
                 preparedStatement.execute();
-                            con.close();
+                con.close();
 
                 return true;
             }

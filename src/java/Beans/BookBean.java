@@ -20,7 +20,7 @@ public class BookBean {
 
     private int userId;
     @ManagedProperty("#{loginBean}")
-    LoginBean loginBean ;
+    LoginBean loginBean;
 
     public ArrayList<Book> getAllBookCanRent() {
         return allBookCanRent;
@@ -52,7 +52,7 @@ public class BookBean {
             allBookCanRent = bookDao.getAllBooksNotRented(loginBean.loggedIn_user.getId());
             allBooksForUser = bookDao.getAllBooksNotWishedAndRented(loginBean.loggedIn_user.getId());
             allBooks = bookDao.getAllBooks();
-            wishListBooks = getWishListBooks(loginBean.loggedIn_user.getId());
+            wishListBooks = bookDao.getWishListBooks(loginBean.loggedIn_user.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,16 +84,18 @@ public class BookBean {
 
     public void addToWishList(int userId, int bookId) {
         bookDao.addToWishList(userId, bookId);
-        getWishListBooks(userId);
+        init();
     }
 
-    public ArrayList<Book> getWishListBooks(int userId) {
-        wishListBooks = bookDao.getWishListBooks(userId);
-        return wishListBooks;
+    public void removeFromWishList(int userId, int bookId) {
+        bookDao.removeFromWishList(userId, bookId);
+        init();
     }
 
- 
-
+//    public ArrayList<Book> getWishListBooks(int userId) {
+//        wishListBooks = bookDao.getWishListBooks(userId);
+//        return wishListBooks;
+//    }
     public LoginBean getLoginBean() {
         return loginBean;
     }
@@ -101,7 +103,5 @@ public class BookBean {
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
     }
-    
-    
 
 }

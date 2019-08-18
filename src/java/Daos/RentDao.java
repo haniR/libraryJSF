@@ -116,6 +116,23 @@ public class RentDao {
 
     }
 
+    public void removeRentedBook(int userId, int bookId) {
+        try {
+            String sql = "DELETE FROM library.rent WHERE userId=? and bookId=?";
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, bookId);
+            preparedStatement.execute();
+            con.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
     public int minusCounter(int bookId) {
         try {
             int qunatity = 0;

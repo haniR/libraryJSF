@@ -9,42 +9,43 @@
         <div class="ui-g">
             <div class="ui-g-12">
                 <div class="card">
-                    <h1> Your  Wish List </h1>
-                    <h:form id="wishTableForm">
+                    <h1>Rental Page</h1>
+                    <h:form id="rentTableForm">
 
-                        <p:dataTable var="wishBook" value="#{bookBean.wishListBooks}" id="data2" >
+                        <p:dataTable var="rentedBook" value="#{rentBean.allRentForUser}" id="data2" >
 
 
                             <p:column headerText="Id" style="color: #FF5722 ">
-                                <h:outputText value="#{wishBook.id}"/>
+                                <h:outputText value="#{rentedBook.id}" />
                             </p:column>
 
                             <p:column headerText="Name" style="color: #0277BD">
-                                <h:outputText value="#{wishBook.name}" />
+                                <h:outputText value="#{rentedBook.name}" />
                             </p:column>
                             <p:column headerText="ISBN" style="color: #0277BD">
-                                <h:outputText value="#{wishBook.isbn}" />
+                                <h:outputText value="#{rentedBook.isbn}" />
                             </p:column>
                             <p:column headerText="Number Of Pages" style="color: #0277BD">
-                                <h:outputText value="#{wishBook.numberOfPages}" />
+                                <h:outputText value="#{rentedBook.numberOfPages}" />
                             </p:column>
                             <p:column headerText="Qunatity" style="color: #0277BD">
-                                <h:outputText value="#{wishBook.qauantity}" />
+                                <h:outputText value="#{rentedBook.qauantity}" />
                             </p:column>
                             <p:column headerText="Title" style="color: #0277BD">
-                                <h:outputText value="#{wishBook.title}" />
+                                <h:outputText value="#{rentedBook.title}" />
                             </p:column>
                             <p:column headerText="Genre" style="color: #0277BD">
-                                <h:outputText value="#{wishBook.genre}" />
+                                <h:outputText value="#{rentedBook.genre}" />
                             </p:column>
                             <p:column headerText="Author" style="color: #0277BD">
-                                <h:outputText value="#{wishBook.author}" />
+                                <h:outputText value="#{rentedBook.author}" />
                             </p:column>
                             <p:column headerText="Action" style="color: #FF5722 ">
-                                <p:commandButton actionListener="#{bookBean.removeFromWishList(loginBean.loggedIn_user.id,wishBook.id)}" value="Remove" update="wishTableForm" style="background-color:  #FF5722 "/>
+                                <p:commandButton actionListener="#{rentBean.removeRentedBook(rentedBook.id)}" value="Remove" update="rentTableForm" style="background-color: #FF5722 "/>
                             </p:column>
                         </p:dataTable>
                     </h:form>
+                    <p:button outcome="rentalPage" value="Home" style="display:inline-block;margin-top:5px"/>
                 </div>
             </div>
         </div>
