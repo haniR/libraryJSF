@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1> Your  Wish List </h1>
+                    <h:form id="wishTableForm">
+
+                        <p:dataTable var="wishBook" value="#{bookBean.getWishListBooks(loginBean.loggedIn_user.id)}" id="data2" >
+
+
+                            <p:column headerText="Id">
+                                <h:outputText value="#{wishBook.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Name">
+                                <h:outputText value="#{wishBook.name}" />
+                            </p:column>
+                            <p:column headerText="ISBN">
+                                <h:outputText value="#{wishBook.isbn}" />
+                            </p:column>
+                            <p:column headerText="Number Of Pages">
+                                <h:outputText value="#{wishBook.numberOfPages}" />
+                            </p:column>
+                            <p:column headerText="Qunatity">
+                                <h:outputText value="#{wishBook.qauantity}" />
+                            </p:column>
+                            <p:column headerText="Title">
+                                <h:outputText value="#{wishBook.title}" />
+                            </p:column>
+                            <p:column headerText="Genre">
+                                <h:outputText value="#{wishBook.genre}" />
+                            </p:column>
+                            <p:column headerText="Author">
+                                <h:outputText value="#{wishBook.author}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+        
+        
+    </ui:define>
+
+</ui:composition>

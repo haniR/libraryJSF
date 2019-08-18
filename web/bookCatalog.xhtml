@@ -40,7 +40,7 @@
                     </h:form>
                     <h:form id="tableForm">
 
-                        <p:dataTable var="allBook" value="#{bookBean.allBooks}" id="data2" selection=""  >
+                        <p:dataTable var="allBook" value="#{bookBean.allBooksForUser}" id="data2" >
 
 
                             <p:column headerText="Id">
@@ -69,7 +69,7 @@
                                 <h:outputText value="#{allBook.author}" />
                             </p:column>
                             <p:column headerText="Wish List ?">
-                                <p:commandButton actionListener="#{bookBean.addToWishList(loginBean.loggedIn_user.id, allBook.id)}"  value="Add" update=":wishTableForm" />
+                                <p:commandButton actionListener="#{bookBean.addToWishList(loginBean.loggedIn_user.id, allBook.id)}"  value="Add" update=":wishTableForm :tableForm" />
                             </p:column>
 
 

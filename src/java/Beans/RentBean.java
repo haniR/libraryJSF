@@ -16,8 +16,8 @@ public class RentBean {
     Boolean isRent = false;
     private int rentBookId;
 
-    public void addRent( int userId) {
-        
+    public void addRent(int userId) {
+
         newRent.setBookId(rentBookId);
         newRent.setFrom(new Date());
         newRent.setUserId(userId);
@@ -35,12 +35,13 @@ public class RentBean {
     public void setRentBookId(int rentBookId) {
         this.rentBookId = rentBookId;
     }
-    
 
     public void setNewRent(Rent newRent) {
         this.newRent = newRent;
     }
-    public void bookIdToBeRent(int bookId){
+
+    public void bookIdToBeRent(int bookId) {
+        System.out.println("book function ");
         rentBookId = bookId;
     }
 

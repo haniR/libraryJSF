@@ -5,18 +5,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lists {
+
     private List<String> authors = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
     private List<String> genres = new ArrayList<>();
+    private List<String> authorsForRent = new ArrayList<>();
+    private List<String> titlesForRent = new ArrayList<>();
+    private List<String> genresForRent = new ArrayList<>();
 
     public Lists() {
+    }
+
+    public List<String> getAuthorsForRent() {
+        return authorsForRent;
+    }
+
+    public void setAuthorsForRent(List<String> authorsForRent) {
+        this.authorsForRent = authorsForRent;
+    }
+
+    public List<String> getTitlesForRent() {
+        return titlesForRent;
+    }
+
+    public void setTitlesForRent(List<String> titlesForRent) {
+        this.titlesForRent = titlesForRent;
+    }
+
+    public List<String> getGenresForRent() {
+        return genresForRent;
+    }
+
+    public void setGenresForRent(List<String> genresForRent) {
+        this.genresForRent = genresForRent;
     }
 
     public List<String> getAuthors() {
         return authors;
     }
-
-   
 
     public void setAuthors(List<String> authors) {
         this.authors = authors;

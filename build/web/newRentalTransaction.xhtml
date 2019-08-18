@@ -9,38 +9,49 @@
         <div class="ui-g">
             <div class="ui-g-12">
                 <div class="card">
-                    <h1>Book Catalog Page</h1>
+                    <h1>new Rental Transaction  Page</h1>
 
                     <h:form id="form1">
                         <p:panelGrid columns="2">
                             <p:outputLabel value="authors"/>
-                            <p:selectOneMenu id="city" value="#{listBean.author}" effect="fold" editable="false">
+                            <p:selectOneMenu id="author" value="#{listBean.authorForRent}" effect="fold" editable="false"
+                                             filter="true" filterMatchMode="startsWith"
+                                             panelStyle="width:140px"
+                                             style="width:140px"
+                                             >
                                 <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
-                                <f:selectItems value="#{listBean.authors}"/>
+                                <f:selectItems value="#{listBean.authorsForRent}" />
                             </p:selectOneMenu>
                             <p:outputLabel value="titles"/>
-                            <p:selectOneMenu id="title" value="#{listBean.title}" effect="fold" editable="false">
+                            <p:selectOneMenu id="title" value="#{listBean.titleForRent}" effect="fold" editable="false"
+                                             filter="true" filterMatchMode="startsWith"
+                                             panelStyle="width:140px"
+                                             style="width:140px">
                                 <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
-                                <f:selectItems value="#{listBean.titles}"/>
+                                <f:selectItems value="#{listBean.titlesForRent}"/>
                             </p:selectOneMenu>
                             <p:outputLabel value="genre"/>
-                            <p:selectOneMenu id="genre" value="#{listBean.genre}" effect="fold" editable="false">
+                            <p:selectOneMenu id="genre" value="#{listBean.genreForRent}" effect="fold" editable="false"
+                                             filter="true" filterMatchMode="startsWith"
+                                             panelStyle="width:140px"
+                                             style="width:140px">
                                 <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
-                                <f:selectItems value="#{listBean.genres}"/>
+                                <f:selectItems value="#{listBean.genresForRent}" />
                             </p:selectOneMenu>
 
                         </p:panelGrid>
-                        <p:commandButton actionListener="#{bookBean.filter(listBean.author, listBean.title, listBean.genre)}" value="Filter" update=":tableForm" />
+                        <p:commandButton actionListener="#{bookBean.filterForRent(loginBean.loggedIn_user.id,listBean.authorForRent,
+                                                           listBean.titleForRent, listBean.genreForRent)}" value="Filter" update=":tableForm" />
 
-                        <h:outputText value="#{listBean.author}"/>
+                        <h:outputText value="#{listBean.authorForRent}"/>
 
                     </h:form>
                     <h:form id="tableForm">
 
-                        <p:dataTable var="allBook" value="#{bookBean.allBooks}" id="data2" >
+                        <p:dataTable var="allBook" value="#{bookBean.allBookCanRent}" id="data2" >
 
 
                             <p:column headerText="Id">
@@ -68,11 +79,11 @@
                             <p:column headerText="Author">
                                 <h:outputText value="#{allBook.author}" />
                             </p:column>
-                            <p:column headerText="Wish List ?">
+<!--                            <p:column headerText="Wish List ?">
                                 <p:commandButton actionListener="#{bookBean.addToWishList(loginBean.loggedIn_user.id, allBook.id)}"  value="Add"  />
-                            </p:column>
+                            </p:column>-->
                             <p:column headerText="Rent ?">
-                                <p:commandButton value="Rent" type="button" onclick="PF('addModel').show();" actionListener="#{rentBean.bookIdToBeRent(allBook.id)}" />
+                                <p:commandButton value="Rent"  onclick="PF('addModel').show();" actionListener="#{rentBean.bookIdToBeRent(allBook.id)}" />
 
                             </p:column>
                         </p:dataTable>

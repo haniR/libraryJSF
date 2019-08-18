@@ -87,15 +87,19 @@
                         </div>
                     </h:form>
                     <pu:menu widgetVar="me">
-                        <p:menuitem id="um_dashboard" value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
-                        <p:submenu  label="Menu 1"  icon="fa fa-circle">
+                        <!--<p:menuitem id="um_dashboard" value="My Rental Page" icon="&#xE871;" outcome="/rentalPage"/>-->
+                        <p:menuitem id="new_Transaction" value="New Rental Transaction Page" icon="&#xE871;" outcome="/newRentalTransaction" rendered="#{loginBean.logggedIn_user_type}"/>
+                        <p:menuitem id="wishList_user" value="Book Catalog" icon="&#xE871;" outcome="/bookCatalog" rendered="#{loginBean.logggedIn_user_type}"/>
+                        <p:menuitem id="um_dashboard" value="My Wish List" icon="&#xE871;" outcome="/wishListUser" rendered="#{loginBean.logggedIn_user_type}"/>
+
+<!--                        <p:submenu  label="Menu 1"  icon="fa fa-circle">
                             <p:menuitem value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
                             <p:menuitem value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
                             <p:submenu  label="Menu 1"  icon="fa fa-circle">
                                 <p:menuitem value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
                                 <p:menuitem value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
                             </p:submenu>
-                        </p:submenu>
+                        </p:submenu>-->
                     </pu:menu>
 
                 </div>

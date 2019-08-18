@@ -1,10 +1,13 @@
 package Beans;
 
 import Daos.ListsDao;
+import Models.Book;
 import Models.Lists;
 import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 @ManagedBean
@@ -17,7 +20,17 @@ public class ListBean {
     private ArrayList<String> titles = new ArrayList<>();
     private String genre;
     private ArrayList<String> genres = new ArrayList<>();
+
+    private String authorForRent;
+    private List<String> authorsForRent = new ArrayList<>();
+    private String titleForRent;
+    private List<String> titlesForRent = new ArrayList<>();
+    private String genreForRent;
+    private List<String> genresForRent = new ArrayList<>();
     private ListsDao listsDao = new ListsDao();
+    private int userId;
+    @ManagedProperty("#{loginBean}")
+    LoginBean loginBean;
 
     public ArrayList<String> getAuthors() {
         return authors;
@@ -29,9 +42,60 @@ public class ListBean {
             authors = listsDao.fillAuthorList();
             genres = listsDao.fillGenreList();
             titles = listsDao.fillTitlesList();
+            authorsForRent = listsDao.fillAuthorsForList(loginBean.loggedIn_user.getId());
+            titlesForRent = listsDao.fillTitlesForRentList(loginBean.loggedIn_user.getId());
+            genresForRent = listsDao.fillGenresForList(loginBean.loggedIn_user.getId());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String getAuthorForRent() {
+        return authorForRent;
+    }
+
+    public void setAuthorForRent(String authorForRent) {
+        this.authorForRent = authorForRent;
+    }
+
+    public List<String> getAuthorsForRent() {
+        return authorsForRent;
+    }
+
+    public void setAuthorsForRent(List<String> authorsForRent) {
+        this.authorsForRent = authorsForRent;
+    }
+
+    public String getTitleForRent() {
+        return titleForRent;
+    }
+
+    public void setTitleForRent(String titleForRent) {
+        this.titleForRent = titleForRent;
+    }
+
+    public List<String> getTitlesForRent() {
+        return titlesForRent;
+    }
+
+    public void setTitlesForRent(List<String> titlesForRent) {
+        this.titlesForRent = titlesForRent;
+    }
+
+    public String getGenreForRent() {
+        return genreForRent;
+    }
+
+    public void setGenreForRent(String genreForRent) {
+        this.genreForRent = genreForRent;
+    }
+
+    public List<String> getGenresForRent() {
+        return genresForRent;
+    }
+
+    public void setGenresForRent(List<String> genresForRent) {
+        this.genresForRent = genresForRent;
     }
 
     public String getAuthor() {
@@ -65,7 +129,6 @@ public class ListBean {
     public void setListsDao(ListsDao listsDao) {
         this.listsDao = listsDao;
     }
-    
 
     public void setAuthors(ArrayList<String> authors) {
         this.authors = authors;
@@ -85,6 +148,14 @@ public class ListBean {
 
     public void setGenres(ArrayList<String> genres) {
         this.genres = genres;
+    }
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
     }
 
 }

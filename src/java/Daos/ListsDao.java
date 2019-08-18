@@ -29,6 +29,8 @@ public class ListsDao {
                 authors.add(resultSet.getString("author"));
             }
             resultSet.close();
+            con.close();
+
             return authors;
 
         } catch (Exception e) {
@@ -54,6 +56,8 @@ public class ListsDao {
             }
 
             resultSet.close();
+            con.close();
+
             return genres;
 
         } catch (Exception e) {
@@ -63,7 +67,7 @@ public class ListsDao {
         }
     }
 
-    public ArrayList<String>  fillTitlesList() {
+    public ArrayList<String> fillTitlesList() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
@@ -79,6 +83,89 @@ public class ListsDao {
                 titles.add(resultSet.getString("title"));
             }
             resultSet.close();
+            con.close();
+
+            return titles;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+
+    public ArrayList<String> fillTitlesForRentList(int userId) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            statement = con.createStatement();
+            String sql = "SELECT b.title FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " );";
+
+            resultSet = statement.executeQuery(sql);
+            ArrayList<String> titles = new ArrayList<>();
+
+            while (resultSet.next()) {
+                titles.add(resultSet.getString("title"));
+            }
+            resultSet.close();
+            con.close();
+
+            return titles;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+
+    public ArrayList<String> fillGenresForList(int userId) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            statement = con.createStatement();
+            String sql = "SELECT b.genre FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " );";
+
+            resultSet = statement.executeQuery(sql);
+            ArrayList<String> titles = new ArrayList<>();
+
+            while (resultSet.next()) {
+                titles.add(resultSet.getString("genre"));
+            }
+            resultSet.close();
+            con.close();
+
+            return titles;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+
+    public ArrayList<String> fillAuthorsForList(int userId) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            statement = con.createStatement();
+            String sql = "SELECT b.author FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " );";
+
+            resultSet = statement.executeQuery(sql);
+            ArrayList<String> titles = new ArrayList<>();
+
+            while (resultSet.next()) {
+                titles.add(resultSet.getString("author"));
+            }
+            resultSet.close();
+            con.close();
+
             return titles;
 
         } catch (Exception e) {
