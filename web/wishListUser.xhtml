@@ -11,7 +11,7 @@
                 <div class="card">
                     <h1> Your  Wish List </h1>
                     <h:form id="wishTableForm">
-
+                         <p:growl id="message" showDetail="true" />
                         <p:dataTable var="wishBook" value="#{bookBean.wishListBooks}" id="data2" >
 
 
@@ -38,18 +38,25 @@
                                 <h:outputText value="#{wishBook.genre}" />
                             </p:column>
                             <p:column headerText="Author" style="color: #0277BD">
-                                <h:outputText value="#{wishBook.author}" />
+                                <h:outputText value="#{bookBean.getAuthors(wishBook.id)}" />
                             </p:column>
                             <p:column headerText="Action" style="color: #FF5722 ">
-                                <p:commandButton actionListener="#{bookBean.removeFromWishList(loginBean.loggedIn_user.id,wishBook.id)}" value="Remove" update="wishTableForm" style="background-color:  #FF5722 "/>
+                                <p:commandButton actionListener="#{bookBean.removeFromWishList(loginBean.loggedIn_user.id,wishBook.id)}" 
+                                                 value="Remove" update="wishTableForm" style="background-color:  #FF5722 ">
+                                <p:confirm header="Confirmation" message="Are you sure?" icon="pi pi-exclamation-triangle" />
+                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog>  
                     </h:form>
                 </div>
             </div>
         </div>
-        
-        
+
+
     </ui:define>
 
 </ui:composition>

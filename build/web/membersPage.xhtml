@@ -8,15 +8,175 @@
     <ui:define name="content">
         <div class="ui-g">
             <div class="ui-g-12">
-                <div class="card">
                     <h1>Members Page</h1>
-                    <p>Use this page to start from scratch and place your custom content.</p>
-                    <p:button outcome="dashboard" value="Home" style="display:inline-block;margin-top:5px"/>
-                </div>
+                    <h:form id="tableForm">
+
+                        <p:dataTable var="allUsers" value="#{userBean.allUsers}" id="data2" selection="#{userBean.oldUser}" selectionMode="single" rowKey="#{allUsers.id}" >
+                            <p:ajax event="rowDblselect" listener="#{userBean.fillEditData()}" oncomplete="PF('editModel').show();" update="editUser"/>
+
+
+                            <p:column headerText="Id" >
+                                <h:outputText value="#{allUsers.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Name" style="color: #0277BD">
+                                <h:outputText value="#{allUsers.name}" />
+                            </p:column>
+                            <p:column headerText="Username" style="color: #0277BD">
+                                <h:outputText value="#{allUsers.username}" />
+                            </p:column>
+                            <p:column headerText="Password" style="color: #0277BD">
+                                <h:outputText value="#{allUsers.password}" />
+                            </p:column>
+                            <p:column headerText="Type" style="color: #0277BD">
+                                <h:outputText value="#{allUsers.type}" />
+                            </p:column>
+                            <p:column headerText="DOB" style="color: #0277BD">
+                                <h:outputText value="#{allUsers.dob}" />
+                            </p:column>
+                            <p:column headerText="Delete" style="color: #FF5722 ">
+                                <p:commandButton actionListener="#{userBean.removeFromUsers(allUsers.id)}" value="Remove" update="tableForm" style="background-color:  #FF5722;margin-left: 25px "/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <p:commandButton value="Add User" style="background-color: #0277BD;margin-top: 12px;" onclick="PF('addModel').show();"/>
+                    <h1>Black List</h1>
+                    <h:form id="blacklistForm">
+
+                        <p:dataTable var="allblockedUsers" value="#{blacklistBean.allBlockedUsers}">
+
+
+                            <p:column headerText="Id" >
+                                <h:outputText value="#{allblockedUsers.user.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Name" style="color: #0277BD">
+                                <h:outputText value="#{allblockedUsers.user.name}" />
+                            </p:column>
+                            <p:column headerText="Username" style="color: #0277BD">
+                                <h:outputText value="#{allblockedUsers.user.username}" />
+                            </p:column>
+                            <p:column headerText="Password" style="color: #0277BD">
+                                <h:outputText value="#{allblockedUsers.user.password}" />
+                            </p:column>
+                            <p:column headerText="Type" style="color: #0277BD">
+                                <h:outputText value="#{allblockedUsers.user.type}" />
+                            </p:column>
+                            <p:column headerText="DOB" style="color: #0277BD">
+                                <h:outputText value="#{allblockedUsers.user.dob}" />
+                            </p:column>
+
+                            <p:column headerText="From" style="color: #0277BD">
+                                <h:outputText value="#{allblockedUsers.from}" />
+                            </p:column>
+                            <p:column headerText="To" style="color: #0277BD">
+                                <h:outputText value="#{allblockedUsers.to}" />
+                            </p:column>
+                            <p:column headerText="Reason" style="color: #0277BD">
+                                <h:outputText value="#{allblockedUsers.resaon}" />
+                            </p:column>
+                            <p:column headerText="Delete" style="color: #FF5722">
+                                <p:commandButton style="background-color: #FF5722" actionListener="#{blacklistBean.remove(allblockedUsers.userId)}" value="Remove" update="blacklistForm"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                    <p:commandButton value="Add User For Block" style="background-color: #0277BD;margin-top: 12px;" onclick="PF('addBlockModel').show();"/>
+
+
+
+
+                    <h:form id="editUser">
+                        <p:dialog header="Edit Item" widgetVar="editModel" modal="true" >
+                            <p:panelGrid columns="4" styleClass="ui-noborder">
+
+                                <h:outputText value="Name = " style="color: #0277BD"/>
+                                <p:inputText value="#{userBean.editedUser.name}" />
+                                <h:outputText value="User Name = " style="color: #0277BD"/>
+                                <p:inputText value="#{userBean.editedUser.username}" />
+                                <h:outputText value="Password = " style="color: #0277BD"/>
+                                <p:inputText value="#{userBean.editedUser.password}" />
+                                <h:outputText value="Type = " style="color: #0277BD"/>
+                                <p:inputText value="#{userBean.editedUser.type}"/>
+                                <h:outputText value="DOB = " style="color: #0277BD"/>
+                                <p:calendar pattern="dd-MM-yyyy" value="#{userBean.editedUser.dob}"/>
+
+                                <p:commandButton value="Edit"  actionListener="#{userBean.saveData()}" onclick="PF('editModel').hide()"  
+                                                 style="background-color:#0277BD;column-width:auto "  oncomplete="PF('userDialog').show()" title="View Detail" update="userDialog"/>
+                            </p:panelGrid>
+                        </p:dialog>
+                        <p:dialog header="user Info" widgetVar="userDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="userDialog" style="text-align:center;">
+                                <p:panelGrid  columns="2"  columnClasses="label,value">
+                                    <h:outputText value="Name = " style="color: #0277BD"/>
+                                    <h:outputText value="#{userBean.editedUser.name}" />
+                                    <h:outputText value="User Name = " style="color: #0277BD"/>
+                                    <h:outputText value="#{userBean.editedUser.username}" />
+                                    <h:outputText value="Password = " style="color: #0277BD"/>
+                                    <h:outputText value="#{userBean.editedUser.password}" />
+                                    <h:outputText value="Type = " style="color: #0277BD"/>
+                                    <h:outputText value="#{userBean.editedUser.type}" />
+                                    <h:outputText value="DOB = " style="color: #0277BD"/>
+                                    <h:outputText value="#{userBean.editedUser.dob}" />
+                                    <h:outputText value="Are You Sure? " style="color: #0277BD"/>
+                                    <p:commandButton value="YES" actionListener="#{userBean.editUser()}" update="tableForm" style="background-color:#FF5722;column-width:auto " onclick="PF('userDialog').hide()" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+                    </h:form>
+
+                    <h:form id="addUser">
+                        <p:dialog header="Add User" widgetVar="addModel" modal="true" >
+                            <p:panelGrid columns="4" styleClass="ui-noborder">
+
+                                <h:outputText value="Name = " style="color: #0277BD"/>
+                                <p:inputText value="#{userBean.newUser.name}" />
+                                <h:outputText value="User Name = " style="color: #0277BD"/>
+                                <p:inputText value="#{userBean.newUser.username}" />
+                                <h:outputText value="Password = " style="color: #0277BD"/>
+                                <p:inputText value="#{userBean.newUser.password}" />
+                                <h:outputText value="Type = " style="color: #0277BD"/>
+                                <p:inputText value="#{userBean.newUser.type}"/>
+                                <h:outputText value="DOB = " style="color: #0277BD"/>
+                                <p:calendar pattern="dd-MM-yyyy" value="#{userBean.newUser.dob}"/>
+
+                                <p:commandButton value="Add "  actionListener="#{userBean.addUser()}" 
+                                                 update="tableForm" onclick="PF('addModel').hide()" style="background-color: #0277BD"/>
+                            </p:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="addBlockUser">
+                        <p:dialog header="Add User" widgetVar="addBlockModel" modal="true" >
+                            <p:panelGrid columns="2" styleClass="ui-noborder">
+
+                                <p:outputLabel value="users" style="color: #0277BD;"/>
+                                <p:selectOneMenu id="users" value="#{blacklistBean.newBlackList.userId}" 
+                                                 effect="fold" editable="false"
+                                             filter="true" filterMatchMode="startsWith"
+                                             panelStyle="width:140px"
+                                             style="width:140px"
+                                             >
+                                    <f:selectItem  itemValue="" itemLabel="Select One" />
+                                    <f:selectItems var="user" value="#{listBean.usersForBlockList}" 
+                                                   itemLabel="#{user.name}" itemValue="#{user.id}" />
+                                </p:selectOneMenu>
+                                <h:outputText value="From  " style="color: #0277BD"/>
+                                <p:calendar pattern="dd-MM-yyyy" value="#{blacklistBean.newBlackList.from}"/>
+                                <h:outputText value="To  " style="color: #0277BD"/>
+                                <p:calendar pattern="dd-MM-yyyy" value="#{blacklistBean.newBlackList.to}"/>
+                                <h:outputText value="Reason  " style="color: #0277BD"/>
+                                <p:inputTextarea  value="#{blacklistBean.newBlackList.resaon}"/>
+                                <h:outputText value="Are you sure ? " style="color: #0277BD"/>
+                                <p:commandButton value="Add "  actionListener="#{blacklistBean.addBlockUser()}" 
+                                                 update="blacklistForm" onclick="PF('addBlockModel').hide()" style="background-color: #0277BD"/>
+                            </p:panelGrid>
+                        </p:dialog>
+                    </h:form>
+
             </div>
         </div>
-        
-        
+
+
     </ui:define>
 
 </ui:composition>

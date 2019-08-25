@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <h1>Library Stock Page</h1>
+                <h:form id="form1">
+                    <p:panelGrid columns="7" styleClass="ui-noborder">
+                        <p:outputLabel value="authors" style="color: #0277BD;"/>
+                        <p:selectOneMenu id="city" value="#{listBean.author}" effect="fold" editable="false" >
+                            <f:selectItem  itemValue="" itemLabel="Select One" />
+                            <f:selectItems value="#{listBean.authors}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="titles" style="color: #0277BD;"/>
+                        <p:selectOneMenu id="title" value="#{listBean.title}" effect="fold" editable="false">
+                            <f:selectItem  itemValue="" itemLabel="Select One"/>
+                            <f:selectItems value="#{listBean.titles}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="genre" style="color: #0277BD;" />
+                        <p:selectOneMenu id="genre" value="#{listBean.genre}" effect="fold" editable="false">
+                            <f:selectItem  itemValue="" itemLabel="Select One"/>
+                            <f:selectItems value="#{listBean.genres}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton actionListener="#{bookBean.filterFroAdmin( listBean.author,listBean.title, listBean.genre)}" value="Filter" update=":tableForm" style="background-color:#0277BD;" />
+
+                    </p:panelGrid>
+
+
+                </h:form>
+                <h:form id="tableForm" style="margin-top: 12px;">
+
+                    <p:dataTable var="allBook" value="#{bookBean.allBooks}" id="data2" >
+
+
+                        <p:column headerText="Id" style="color: #FF5722">
+                            <h:outputText value="#{allBook.id}"/>
+                        </p:column>
+
+                        <p:column headerText="Name" style="color: #0277BD">
+                            <h:outputText value="#{allBook.name}" />
+                        </p:column>
+                        <p:column headerText="ISBN" style="color: #0277BD">
+                            <h:outputText value="#{allBook.isbn}" />
+                        </p:column>
+                        <p:column headerText="Number Of Pages" style="color: #0277BD">
+                            <h:outputText value="#{allBook.numberOfPages}" />
+                        </p:column>
+                        
+                        <p:column headerText="Title" style="color: #0277BD">
+                            <h:outputText value="#{allBook.title}" />
+                        </p:column>
+                        <p:column headerText="Genre" style="color: #0277BD">
+                            <h:outputText value="#{allBook.genre}" />
+                        </p:column>
+                        <p:column headerText="Author" style="color: #0277BD">
+                            <h:outputText value="#{bookBean.getAuthors(allBook.id)}" />
+                        </p:column>
+                        <p:column headerText="Quantity" style="color: #0277BD">
+                            <h:outputText value="#{allBook.qauantity}" />
+                        </p:column>
+                        <p:column headerText="Rented Time" style="color: #0277BD">
+                            <h:outputText value="#{allBook.numOfRent}" />
+                        </p:column>
+                        <p:column headerText="Available" style="color: #0277BD">
+                            <h:outputText value="#{allBook.available}" />
+                        </p:column>
+                        <p:column headerText="Rented Now" style="color: #0277BD">
+                            <h:outputText value="#{bookBean.rentedNow(allBook.id)}" />
+                        </p:column>
+
+
+
+                    </p:dataTable>
+                </h:form>
+
+                <p:button outcome="dashboard" value="Home" style="display:inline-block;margin-top:5px"/>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

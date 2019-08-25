@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Book Details Page</h1>
+                    <p:repeat var="book" value="#{bookBean.getBookById(param['id'])}" >
+
+                        <h:panelGrid columns="4" styleClass="ui-noborder" cellspacing="30px">
+                            <p:outputLabel value="ISBN" style="color: #0277BD; "/>
+                            <p:inputText readonly="true" value="#{book.isbn}" />
+
+                            <p:outputLabel value="Name = " style="color: #0277BD"/>
+                            <p:inputText readonly="true" value="#{book.name}" />
+                            <p:outputLabel value="Number Of Pages = " style="color: #0277BD"/>
+                            <p:inputText readonly="true" value="#{book.numberOfPages}" />
+                            <p:outputLabel value="Quantity = " style="color: #0277BD"/>
+                            <p:inputText readonly="true" value="#{book.qauantity}" />
+                            <p:outputLabel value="Title = " style="color: #0277BD"/>
+                            <p:inputText readonly="true" value="#{book.title}" />
+                            <p:outputLabel value="Genre = " style="color: #0277BD"/>
+                            <p:inputText readonly="true" value="#{book.genre}" />
+                            <p:outputLabel value="Author = " style="color: #0277BD"/>
+                            <p:inputText readonly="true" value="#{bookBean.getAuthors(param['id'])}" />
+                            <p:commandButton value="Edit" oncomplete="PF('editModel').show()"
+                                             actionListener="#{bookBean.fillEditBookData(param['id'])}" />
+                        </h:panelGrid>  
+
+                    </p:repeat>
+
+                    <h:form id="editBook">
+                        <p:dialog header="Edit Book" widgetVar="editModel" modal="true" >
+                            <p:panelGrid columns="4" styleClass="ui-noborder">
+
+                                <p:outputLabel value="Name = " style="color: #0277BD"/>
+                                <p:inputText  value="#{bookBean.editedBook.name}" />
+                                <p:outputLabel value="ISBN = " style="color: #0277BD"/>
+                                <p:inputText  value="#{bookBean.editedBook.isbn}" />
+                                <p:outputLabel value="Number Of Pages = " style="color: #0277BD"/>
+                                <p:inputText  value="#{bookBean.editedBook.numberOfPages}" />
+                                <p:outputLabel value="Quantity = " style="color: #0277BD"/>
+                                <p:inputText  value="#{bookBean.editedBook.qauantity}" />
+                                <p:outputLabel value="Title = " style="color: #0277BD"/>
+                                <p:inputText  value="#{bookBean.editedBook.title}" />
+                                <p:outputLabel value="Genre = " style="color: #0277BD"/>
+                                <p:inputText  value="#{bookBean.editedBook.genre}" />
+
+                                <p:commandButton value="Edit"  actionListener="#{bookBean.saveData()}" onclick="PF('editModel').hide()"  
+                                                 style="background-color:#0277BD;column-width:auto "  oncomplete="PF('bookDialog').show()" title="View Detail" update="bookDialog"/>
+                            </p:panelGrid>
+                        </p:dialog>
+                        <p:dialog header="Book Information" widgetVar="bookDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" style="text-align: center">
+                            <p:outputPanel id="bookDialog" style="text-align:center;">
+                                <p:panelGrid  columns="2"  columnClasses="label,value">
+                                    <h:outputText value="Name = " style="color: #0277BD"/>
+                                    <h:outputText value="#{bookBean.editedBook.name}" />
+                                    <h:outputText value="ISBN = " style="color: #0277BD"/>
+                                    <h:outputText value="#{bookBean.editedBook.isbn}" />
+                                    <p:outputLabel value="Number Of Pages = " style="color: #0277BD"/>
+                                    <h:outputText value="#{bookBean.editedBook.numberOfPages}" />
+                                    <p:outputLabel value="Quantity = " style="color: #0277BD"/>
+                                    <h:outputText value="#{bookBean.editedBook.qauantity}" />
+                                    <p:outputLabel value="Title = " style="color: #0277BD"/>
+                                    <h:outputText value="#{bookBean.editedBook.title}" />
+                                    <p:outputLabel value="Genre = " style="color: #0277BD"/>
+                                    <h:outputText value="#{bookBean.editedBook.genre}" />
+                                    <h:outputText value="Are You Sure? " style="color: #0277BD"/>
+                                    <p:commandButton value="YES" actionListener="#{bookBean.editBook()}"  style="background-color:#FF5722;column-width:auto " onclick="PF('bookDialog').hide()" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+                    </h:form>
+
+                    <p:button outcome="authorsBook" value="Back To Authors Book" style="display:inline-block;margin-top:5px;background-color: #03A9F4"/>
+
+                </div>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

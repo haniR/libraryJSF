@@ -13,35 +13,66 @@ public class BookDao {
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
 
+    public Book getBookById(int bookId) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+            String sql = null;
+            sql = "SELECT  *  FROM library.books where id =" + bookId + "";
+
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql);
+            Book book = new Book();
+
+            while (resultSet.next()) {
+                book.setId(resultSet.getInt("id"));
+                book.setName(resultSet.getString("name"));
+                book.setIsbn(resultSet.getInt("isbn"));
+                book.setGenre(resultSet.getString("genre"));
+                book.setTitle(resultSet.getString("title"));
+                book.setQauantity(resultSet.getInt("quantity"));
+                book.setNumberOfPages(resultSet.getInt("numberOfPages"));
+            }
+            resultSet.close();
+            con.close();
+            return book;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     public ArrayList<Book> getAllBooksFilterization(String author, String title, String genre) {
         try {
-            System.out.println("author = " + author + " title = " + title);
+            System.out.println(" title = " + title);
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
                     + "user=root&password=root");
             String sql = null;
             if (author == "" && title == "" && genre == "") {
-                sql = "SELECT * FROM library.books";
+                sql = "SELECT * FROM library.books where quantity >0 ";
             } else if (author != "" && title == "" && genre == "") {
-                sql = "SELECT * FROM library.books where author='" + author + "'";
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and a.name='" + author + "' and b.quantity >0;";
 
             } else if (author == "" && title != "" && genre == "") {
-                sql = "SELECT * FROM library.books where title='" + title + "'";
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and b.title='" + title + "' and b.quantity >0;";
 
             } else if (author == "" && title == "" && genre != "") {
-                sql = "SELECT * FROM library.books where genre='" + genre + "'";
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and b.genre='" + genre + "' and b.quantity >0;";
 
             } else if (author != "" && title != "" && genre != "") {
-                sql = "SELECT * FROM library.books where genre='" + genre + "' and title = '" + title + "'and author = '" + author + "'";
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and a.name='" + author + "' and b.title='" + title + "' and b.genre='" + genre + "' and b.quantity >0;";
 
             } else if (author != "" && title != "" && genre == "") {
-                sql = "SELECT * FROM library.books where title = '" + title + "'and author = '" + author + "'";
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and a.name='" + author + "' and b.title='" + title + "' and b.quantity >0 ;";
 
             } else if (author != "" && title == "" && genre != "") {
-                sql = "SELECT * FROM library.books where genre='" + genre + "' and author = '" + author + "'";
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and a.name='" + author + "' and  b.genre='" + genre + "' and b.quantity >0;";
 
             } else if (author == "" && title != "" && genre != "") {
-                sql = "SELECT * FROM library.books where genre='" + genre + "' and title = '" + title + "'";
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId   and b.title='" + title + "' and b.genre='" + genre + "' and b.quantity >0;";
 
             }
             statement = con.createStatement();
@@ -53,11 +84,69 @@ public class BookDao {
                 book.setId(resultSet.getInt("id"));
                 book.setName(resultSet.getString("name"));
                 book.setIsbn(resultSet.getInt("isbn"));
-                book.setAuthor(resultSet.getString("author"));
                 book.setGenre(resultSet.getString("genre"));
                 book.setTitle(resultSet.getString("title"));
                 book.setQauantity(resultSet.getInt("quantity"));
                 book.setNumberOfPages(resultSet.getInt("numberOfPages"));
+                books.add(book);
+            }
+            resultSet.close();
+            con.close();
+            return books;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public ArrayList<Book> getAllBooksFilterizationForAdmin(String author, String title, String genre) {
+        try {
+            System.out.println(" title = " + title);
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+            String sql = null;
+            if (author == "" && title == "" && genre == "") {
+                sql = "SELECT * FROM library.books where quantity >0 ";
+            } else if (author != "" && title == "" && genre == "") {
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and a.name='" + author + "' and b.quantity >0;";
+
+            } else if (author == "" && title != "" && genre == "") {
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and b.title='" + title + "' and b.quantity >0;";
+
+            } else if (author == "" && title == "" && genre != "") {
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and b.genre='" + genre + "' and b.quantity >0;";
+
+            } else if (author != "" && title != "" && genre != "") {
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and a.name='" + author + "' and b.title='" + title + "' and b.genre='" + genre + "' and b.quantity >0;";
+
+            } else if (author != "" && title != "" && genre == "") {
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and a.name='" + author + "' and b.title='" + title + "' and b.quantity >0 ;";
+
+            } else if (author != "" && title == "" && genre != "") {
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId  and a.name='" + author + "' and  b.genre='" + genre + "' and b.quantity >0;";
+
+            } else if (author == "" && title != "" && genre != "") {
+                sql = "SELECT DISTINCT b.*  FROM library.books as b ,library.author as a,library.author_books as ab where b.id=ab.bookId and a.id=ab.authorId   and b.title='" + title + "' and b.genre='" + genre + "' and b.quantity >0;";
+
+            }
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql);
+            ArrayList<Book> books = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Book book = new Book();
+                book.setId(resultSet.getInt("id"));
+                book.setName(resultSet.getString("name"));
+                book.setIsbn(resultSet.getInt("isbn"));
+                book.setGenre(resultSet.getString("genre"));
+                book.setTitle(resultSet.getString("title"));
+                book.setQauantity(resultSet.getInt("quantity"));
+                book.setNumberOfPages(resultSet.getInt("numberOfPages"));
+                book.setNumOfRent(resultSet.getInt("numOfRent"));
+                book.setAvailable(resultSet.getInt("available"));
+
                 books.add(book);
             }
             resultSet.close();
@@ -95,27 +184,27 @@ public class BookDao {
                     + "user=root&password=root");
             String sql = null;
             if (author == "" && title == "" && genre == "") {
-                sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " );";
+                sql = "SELECT DISTINCT b.* FROM library.books as b ,library.author as a,library.author_books as ab where b.id not In (select bookId from library.rent as r  where r.userId=" + userId + "  ) and b.id=ab.bookId and a.id=ab.authorId  and b.quantity >0;";
             } else if (author != "" && title == "" && genre == "") {
-                sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " ) and b.author='" + author + "';";
+                sql = "SELECT DISTINCT b.* FROM library.books as b ,library.author as a,library.author_books as ab where b.id not In (select bookId from library.rent as r  where r.userId=" + userId + "  ) and b.id=ab.bookId and a.id=ab.authorId  and b.quantity >0 and a.name ='" + author + "';";
 
             } else if (author == "" && title != "" && genre == "") {
-                sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " ) and b.title= '" + title + "';";
+                sql = "SELECT DISTINCT b.* FROM library.books as b ,library.author as a,library.author_books as ab where b.id not In (select bookId from library.rent as r  where r.userId=" + userId + "  ) and b.id=ab.bookId and a.id=ab.authorId  and b.quantity >0 and b.title ='" + title + "';";
 
             } else if (author == "" && title == "" && genre != "") {
-                sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " ) and b.genre='" + genre + "' ;";
+                sql = "SELECT DISTINCT b.* FROM library.books as b ,library.author as a,library.author_books as ab where b.id not In (select bookId from library.rent as r  where r.userId=" + userId + "  ) and b.id=ab.bookId and a.id=ab.authorId  and b.quantity >0 and b.genre ='" + genre + "';";
 
             } else if (author != "" && title != "" && genre != "") {
-                sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " ) and b.genre='" + genre + "' and b.title='" + title + "' and b.author='" + author + "';";
+                sql = "SELECT DISTINCT b.* FROM library.books as b ,library.author as a,library.author_books as ab where b.id not In (select bookId from library.rent as r  where r.userId=" + userId + "  ) and b.id=ab.bookId and a.id=ab.authorId  and b.quantity >0 and a.name ='" + author + "' and b.title ='" + title + "' and b.genre ='" + genre + "';";
 
             } else if (author != "" && title != "" && genre == "") {
-                sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " ) and b.author='" + author + "' and b.title='" + title + "';";
+                sql = "SELECT DISTINCT b.* FROM library.books as b ,library.author as a,library.author_books as ab where b.id not In (select bookId from library.rent as r  where r.userId=" + userId + "  ) and b.id=ab.bookId and a.id=ab.authorId  and b.quantity >0 and a.name ='" + author + "' and b.title ='" + title + "' ;";
 
             } else if (author != "" && title == "" && genre != "") {
-                sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " ) and b.genre='" + genre + "' and b.author='" + author + "';";
+                sql = "SELECT DISTINCT b.* FROM library.books as b ,library.author as a,library.author_books as ab where b.id not In (select bookId from library.rent as r  where r.userId=" + userId + "  ) and b.id=ab.bookId and a.id=ab.authorId  and b.quantity >0 and a.name ='" + author + "'  and b.genre ='" + genre + "';";
 
             } else if (author == "" && title != "" && genre != "") {
-                sql = "SELECT b.* FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " ) and b.genre='" + genre + "' and b.title='" + title + "';";
+                sql = "SELECT DISTINCT b.* FROM library.books as b ,library.author as a,library.author_books as ab where b.id not In (select bookId from library.rent as r  where r.userId=" + userId + "  ) and b.id=ab.bookId and a.id=ab.authorId  and b.quantity >0  and b.title ='" + title + "' and b.genre ='" + genre + "';";
 
             }
             statement = con.createStatement();
@@ -127,7 +216,6 @@ public class BookDao {
                 book.setId(resultSet.getInt("id"));
                 book.setName(resultSet.getString("name"));
                 book.setIsbn(resultSet.getInt("isbn"));
-                book.setAuthor(resultSet.getString("author"));
                 book.setGenre(resultSet.getString("genre"));
                 book.setTitle(resultSet.getString("title"));
                 book.setQauantity(resultSet.getInt("quantity"));
@@ -143,6 +231,39 @@ public class BookDao {
             return null;
         }
 
+    }
+
+    public ArrayList<Book> getAllBooksForAuthor(String author) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+            String sql = "    SELECT b.* FROM library.books as b ,library.author as a , library.author_books as ab where ab.authorId=a.id and ab.bookId=b.id and  a.name='" + author + "'   ;\n"
+                    + "";
+
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql);
+            ArrayList<Book> books = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Book book = new Book();
+                book.setId(resultSet.getInt("id"));
+                book.setName(resultSet.getString("name"));
+                book.setIsbn(resultSet.getInt("isbn"));
+                book.setGenre(resultSet.getString("genre"));
+                book.setTitle(resultSet.getString("title"));
+                book.setQauantity(resultSet.getInt("quantity"));
+                book.setNumberOfPages(resultSet.getInt("numberOfPages"));
+                books.add(book);
+            }
+            resultSet.close();
+            con.close();
+
+            return books;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public ArrayList<Book> getAllBooks() {
@@ -161,17 +282,42 @@ public class BookDao {
                 book.setId(resultSet.getInt("id"));
                 book.setName(resultSet.getString("name"));
                 book.setIsbn(resultSet.getInt("isbn"));
-                book.setAuthor(resultSet.getString("author"));
                 book.setGenre(resultSet.getString("genre"));
                 book.setTitle(resultSet.getString("title"));
                 book.setQauantity(resultSet.getInt("quantity"));
                 book.setNumberOfPages(resultSet.getInt("numberOfPages"));
+                book.setNumOfRent(resultSet.getInt("numOfRent"));
+                book.setAvailable(resultSet.getInt("available"));
                 books.add(book);
             }
             resultSet.close();
             con.close();
 
             return books;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public ArrayList<String> getAllAuthorsForBook(int bookId) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+            String sql = "SELECT a.name  FROM library.books as b ,library.author as a,library.author_books as ab where ab.bookId=b.id and a.id=ab.authorId and b.id=" + bookId + " and b.quantity >0 ; ";
+
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql);
+            ArrayList<String> authorsForBook = new ArrayList<>();
+
+            while (resultSet.next()) {
+                authorsForBook.add(resultSet.getString("name"));
+            }
+            resultSet.close();
+            con.close();
+
+            return authorsForBook;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -194,7 +340,6 @@ public class BookDao {
                 book.setId(resultSet.getInt("id"));
                 book.setName(resultSet.getString("name"));
                 book.setIsbn(resultSet.getInt("isbn"));
-                book.setAuthor(resultSet.getString("author"));
                 book.setGenre(resultSet.getString("genre"));
                 book.setTitle(resultSet.getString("title"));
                 book.setQauantity(resultSet.getInt("quantity"));
@@ -227,7 +372,6 @@ public class BookDao {
                 book.setId(resultSet.getInt("id"));
                 book.setName(resultSet.getString("name"));
                 book.setIsbn(resultSet.getInt("isbn"));
-                book.setAuthor(resultSet.getString("author"));
                 book.setGenre(resultSet.getString("genre"));
                 book.setTitle(resultSet.getString("title"));
                 book.setQauantity(resultSet.getInt("quantity"));
@@ -318,7 +462,6 @@ public class BookDao {
                 book.setId(resultSet.getInt("id"));
                 book.setName(resultSet.getString("name"));
                 book.setIsbn(resultSet.getInt("isbn"));
-                book.setAuthor(resultSet.getString("author"));
                 book.setGenre(resultSet.getString("genre"));
                 book.setTitle(resultSet.getString("title"));
                 book.setQauantity(resultSet.getInt("quantity"));
@@ -333,6 +476,71 @@ public class BookDao {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void addBook(Book book) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            String sql = "INSERT INTO library.books (name,isbn,numberOfPages,quantity,title,genre,available) "
+                    + "values (?,?,?,?,?)";
+            preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, book.getName());
+            preparedStatement.setInt(2, book.getIsbn());
+            preparedStatement.setInt(3, book.getNumberOfPages());
+            preparedStatement.setInt(4, book.getQauantity());
+            preparedStatement.setString(5, book.getTitle());
+            preparedStatement.setString(6, book.getGenre());
+            preparedStatement.setInt(7, book.getQauantity());
+
+            preparedStatement.execute();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error Happened");
+        }
+
+    }
+
+    public void deleteBook(int bookId) {
+        try {
+            String sql = "DELETE FROM library.books WHERE id=?";
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, bookId);
+            preparedStatement.execute();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+
+    public void editBook(Book book) {
+        try {
+            String sql = "UPDATE library.books SET name =?, isbn =?, numberOfPages =?"
+                    + ", quantity =?, title =?,genre=? "
+                    + " WHERE id =?";
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, book.getName());
+            preparedStatement.setInt(2, book.getIsbn());
+            preparedStatement.setInt(3, book.getNumberOfPages());
+            preparedStatement.setInt(4, book.getQauantity());
+            preparedStatement.setString(5, book.getTitle());
+            preparedStatement.setString(6, book.getGenre());
+            preparedStatement.setInt(7, book.getId());
+            preparedStatement.execute();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
     }
 
 }

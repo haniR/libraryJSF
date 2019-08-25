@@ -10,6 +10,7 @@
             <div class="ui-g-12">
                 <div class="card">
                     <h1>new Rental Transaction  Page</h1>
+                        <p:growl id="rentMaxMessage" showDetail="true" />
 
                     <h:form id="form1" >
                         <p:panelGrid columns="7" styleClass="ui-noborder" >
@@ -19,7 +20,6 @@
                                              panelStyle="width:140px"
                                              style="width:140px;"
                                              >
-                                <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
                                 <f:selectItems value="#{listBean.authorsForRent}" />
                             </p:selectOneMenu>
@@ -28,7 +28,6 @@
                                              filter="true" filterMatchMode="startsWith"
                                              panelStyle="width:140px"
                                              style="width:140px">
-                                <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
                                 <f:selectItems value="#{listBean.titlesForRent}"/>
                             </p:selectOneMenu>
@@ -37,14 +36,13 @@
                                              filter="true" filterMatchMode="startsWith"
                                              panelStyle="width:140px"
                                              style="width:140px">
-                                <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
                                 <f:selectItems value="#{listBean.genresForRent}" />
                             </p:selectOneMenu>
                             <p:commandButton  actionListener="#{bookBean.filterForRent(loginBean.loggedIn_user.id,
                                                                 listBean.authorForRent,
                                                                 listBean.titleForRent, listBean.genreForRent)}"
-                                              value="Filter" update=":tableForm"
+                                              value="Filter" update="tableForm "
                                               style="background-color: #0277BD "
                                               />
                         </p:panelGrid>
@@ -80,14 +78,14 @@
                                 <h:outputText value="#{allBook.genre}" />
                             </p:column>
                             <p:column headerText="Author" style="color: #0277BD">
-                                <h:outputText value="#{allBook.author}" />
+                                <h:outputText value="#{bookBean.getAuthors(allBook.id)}" />
                             </p:column>
-                            <!--                            <p:column headerText="Wish List ?">
-                                                            <p:commandButton actionListener="#{bookBean.addToWishList(loginBean.loggedIn_user.id, allBook.id)}"  value="Add"  />
-                                                        </p:column>-->
+                            
                             <p:column headerText="Rent ?" style="color: #FF5722">
                                 <p:commandButton value="Rent"  onclick="PF('addModel').show();" actionListener="#{rentBean.bookIdToBeRent(allBook.id)}"
-                                                                                               style="background-color: #FF5722 " />
+                                                 style="background-color: #FF5722 " rendered="#{loginBean.numberOfRentsMax()}"/>
+                                <p:commandButton value="Rent"   actionListener="#{settingBean.maxRentMessage()}"
+                                                 style="background-color: #FF5722 " rendered="#{!loginBean.numberOfRentsMax()}"/>
 
                             </p:column>
                         </p:dataTable>

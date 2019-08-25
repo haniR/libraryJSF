@@ -11,7 +11,7 @@
                 <div class="card">
                     <h1>Rental Page</h1>
                     <h:form id="rentTableForm">
-
+                        <p:growl id="message" showDetail="true" />
                         <p:dataTable var="rentedBook" value="#{rentBean.allRentForUser}" id="data2" >
 
 
@@ -38,19 +38,26 @@
                                 <h:outputText value="#{rentedBook.genre}" />
                             </p:column>
                             <p:column headerText="Author" style="color: #0277BD">
-                                <h:outputText value="#{rentedBook.author}" />
+                                <h:outputText value="#{bookBean.getAuthors(rentedBook.id)}" />
                             </p:column>
                             <p:column headerText="Action" style="color: #FF5722 ">
-                                <p:commandButton actionListener="#{rentBean.removeRentedBook(rentedBook.id)}" value="Remove" update="rentTableForm" style="background-color: #FF5722 "/>
+                                <p:commandButton actionListener="#{rentBean.removeRentedBook(rentedBook.id)}" value="Remove" update="rentTableForm" style="background-color: #FF5722 ">
+                                    <p:confirm header="Confirmation" message="Are you sure?" icon="pi pi-exclamation-triangle" />
+                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog>  
+
                     </h:form>
                     <p:button outcome="rentalPage" value="Home" style="display:inline-block;margin-top:5px"/>
                 </div>
             </div>
         </div>
-        
-        
+
+
     </ui:define>
 
 </ui:composition>

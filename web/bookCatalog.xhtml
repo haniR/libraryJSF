@@ -15,23 +15,20 @@
                         <p:panelGrid columns="7" styleClass="ui-noborder">
                             <p:outputLabel value="authors" style="color: #0277BD;"/>
                             <p:selectOneMenu id="city" value="#{listBean.author}" effect="fold" editable="false" >
-                                <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One" />
                                 <f:selectItems value="#{listBean.authors}"/>
                             </p:selectOneMenu>
                             <p:outputLabel value="titles" style="color: #0277BD;"/>
                             <p:selectOneMenu id="title" value="#{listBean.title}" effect="fold" editable="false">
-                                <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
                                 <f:selectItems value="#{listBean.titles}"/>
                             </p:selectOneMenu>
                             <p:outputLabel value="genre" style="color: #0277BD;" />
                             <p:selectOneMenu id="genre" value="#{listBean.genre}" effect="fold" editable="false">
-                                <p:ajax event="change" update="@form" />
                                 <f:selectItem  itemValue="" itemLabel="Select One"/>
                                 <f:selectItems value="#{listBean.genres}"/>
                             </p:selectOneMenu>
-                            <p:commandButton actionListener="#{bookBean.filter(listBean.author, listBean.title, listBean.genre)}" value="Filter" update=":tableForm" style="background-color:#0277BD;" />
+                            <p:commandButton actionListener="#{bookBean.filter( listBean.author,listBean.title, listBean.genre)}" value="Filter" update=":tableForm" style="background-color:#0277BD;" />
 
                         </p:panelGrid>
 
@@ -65,7 +62,7 @@
                                 <h:outputText value="#{allBook.genre}" />
                             </p:column>
                             <p:column headerText="Author" style="color: #0277BD">
-                                <h:outputText value="#{allBook.author}" />
+                                <h:outputText value="#{bookBean.getAuthors(allBook.id)}" />
                             </p:column>
                             <p:column headerText="Wish List ?" style="color: #F44336">
                                 <p:commandButton actionListener="#{bookBean.addToWishList(loginBean.loggedIn_user.id, allBook.id)}" 

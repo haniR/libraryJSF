@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content"  >
+        <div class="ui-g" style="width: 50%;">
+            <div class="ui-g-12">
+                
+                <div class="card exception-panel">
+                    <i class="material-icons">&#xE32A;</i>
+
+                    <h1 style="color: tomato">Access Denied</h1>
+
+                    <div class="exception-detail">
+                        <p>
+                            You are not authorized to access this page Because you  have been Blocked!!.
+                        </p>
+
+                        <hr style="width: 50%;margin-left: 0;height: 3px;background-color:  black"/>
+                        <p:panelGrid columns="2" styleClass="ui-noborder">
+                            <h:outputText value="Reason = " style="color: #0277BD"/>
+                            <h:outputText value="#{blacklistBean.userblocked.resaon}" />
+                            <h:outputText value="Blocked From = " style="color: #0277BD"/>
+                            <h:outputText value="#{blacklistBean.userblocked.from}" />
+                            <h:outputText value="Blocked To = " style="color: #0277BD"/>
+                            <h:outputText value="#{blacklistBean.userblocked.to}" />
+
+                        </p:panelGrid>
+                    </div>
+                </div>
+
+                <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+                <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />  
+                <!--<p:button outcome="dashboard" value="Home" style="display:inline-block;margin-top:5px"/>-->
+
+            </div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

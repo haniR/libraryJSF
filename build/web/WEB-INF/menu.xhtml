@@ -88,10 +88,15 @@
                     </h:form>
                     <pu:menu widgetVar="me">
                         <!--<p:menuitem id="um_dashboard" value="My Rental Page" icon="&#xE871;" outcome="/rentalPage"/>-->
-                        <p:menuitem id="new_Transaction" value="New Rental Transaction Page" icon="&#xE871;" outcome="/newRentalTransaction" rendered="#{loginBean.logggedIn_user_type}"/>
-                        <p:menuitem id="book_Catalog" value="Book Catalog" icon="&#xE871;" outcome="/bookCatalog" rendered="#{loginBean.logggedIn_user_type}"/>
+                        <p:menuitem id="new_Transaction" value="New Rental Transaction Page" icon="&#xE871;" outcome="#{!userBean.isBlocked ? '/newRentalTransaction' : '/noAccessRent'}" rendered="#{loginBean.logggedIn_user_type}" />
+                        <p:menuitem id="book_Catalog" value="Book Catalog" icon="&#xE871;" outcome="/bookCatalog" rendered="#{loginBean.logggedIn_user_type}"  />
                         <p:menuitem id="wishList_user" value="My Wish List" icon="&#xE871;" outcome="/wishListUser" rendered="#{loginBean.logggedIn_user_type}"/>
                         <p:menuitem id="rental_Page" value="My Rental Page" icon="&#xE871;" outcome="/rentalPage" rendered="#{loginBean.logggedIn_user_type}"/>
+                        <p:menuitem id="members_Page" value="Members Page" icon="&#xE871;" outcome="/membersPage" rendered="#{!loginBean.logggedIn_user_type}"/>
+                        <p:menuitem id="authorsBook_Page" value="Authors Book Page" icon="&#xE871;" outcome="/authorsBook" rendered="#{!loginBean.logggedIn_user_type}"/>
+                        <p:menuitem id="libraryStock_Page" value="Library Stock  Page" icon="&#xE871;" outcome="/libraryStockPage" rendered="#{!loginBean.logggedIn_user_type}"/>
+                        <p:menuitem id="adminRentalPage" value="Rental Page" icon="&#xE871;" outcome="/adminRentalPage" rendered="#{!loginBean.logggedIn_user_type}"/>
+                        <p:menuitem id="settingPage" value="Setting Page" icon="&#xE871;" outcome="/settingPage" rendered="#{!loginBean.logggedIn_user_type}"/>
 
 <!--                        <p:submenu  label="Menu 1"  icon="fa fa-circle">
                             <p:menuitem value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>

@@ -20,13 +20,13 @@ public class ListsDao {
                     + "user=root&password=root");
 
             statement = con.createStatement();
-            String sql = "SELECT author FROM library.books";
+            String sql = "SELECT name FROM library.author";
 
             resultSet = statement.executeQuery(sql);
             ArrayList<String> authors = new ArrayList<>();
 
             while (resultSet.next()) {
-                authors.add(resultSet.getString("author"));
+                authors.add(resultSet.getString("name"));
             }
             resultSet.close();
             con.close();
@@ -86,6 +86,64 @@ public class ListsDao {
             con.close();
 
             return titles;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+
+    public ArrayList<User> fillUsersForBlockList() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            statement = con.createStatement();
+            String sql = "SELECT u.* FROM library.users as u where u.id not in( select userId  from library.blacklist as b  )";
+
+            resultSet = statement.executeQuery(sql);
+            ArrayList<User> usersForBlockList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setName(resultSet.getString("name"));
+
+                usersForBlockList.add(user);
+            }
+            resultSet.close();
+            con.close();
+
+            return usersForBlockList;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+
+    public ArrayList<Integer> fillUsersForBlockNamesList() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            statement = con.createStatement();
+            String sql = "SELECT u.id FROM library.users as u where u.id not in( select userId  from library.blacklist as b  )";
+
+            resultSet = statement.executeQuery(sql);
+            ArrayList<Integer> usersForBlockList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                usersForBlockList.add(resultSet.getInt("id"));
+            }
+            resultSet.close();
+            con.close();
+
+            return usersForBlockList;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,13 +213,19 @@ public class ListsDao {
                     + "user=root&password=root");
 
             statement = con.createStatement();
-            String sql = "SELECT b.author FROM library.books as b where b.id not in (select bookId from library.rent as r  where r.userId=" + userId + " );";
+            String sql = "SELECT DISTINCT a.name\n"
+                    + "FROM library.books as b ,library.author as a,library.author_books as ab where \n"
+                    + "b.id not In (select bookId from library.rent as r  where r.userId=1  ) \n"
+                    + "and b.id=ab.bookId \n"
+                    + "and a.id=ab.authorId  \n"
+                    + "and b.quantity >0\n"
+                    + ";";
 
             resultSet = statement.executeQuery(sql);
             ArrayList<String> titles = new ArrayList<>();
 
             while (resultSet.next()) {
-                titles.add(resultSet.getString("author"));
+                titles.add(resultSet.getString("name"));
             }
             resultSet.close();
             con.close();

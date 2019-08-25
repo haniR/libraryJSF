@@ -1,8 +1,9 @@
-
 package Models;
 
+import java.util.Date;
 
 public class Book {
+
     private int id;
     private String name;
     private int isbn;
@@ -11,10 +12,56 @@ public class Book {
     private String author;
     private String title;
     private String genre;
+    private int numOfRent;
+    private int available;
+    private String user_name;
+    private Date from;
+    private  Date to;
 
     public Book() {
-        
+
     }
+
+    public Date getFrom() {
+        return from;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
+    }
+    
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+    
+    public int getNumOfRent() {
+        return numOfRent;
+    }
+
+    public void setNumOfRent(int numOfRent) {
+        this.numOfRent = numOfRent;
+    }
+
+    public int getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(int available) {
+        this.available = available;
+    }
+    
 
     public int getId() {
         return id;
@@ -79,6 +126,5 @@ public class Book {
     public void setGenre(String genre) {
         this.genre = genre;
     }
-    
-    
+
 }

@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Setting Page</h1>
+                    <h:form id="form1">
+
+                        <p:panelGrid columns="2" styleClass="ui-noborder">
+                            <p:outputLabel value="Allowed Number Of Rented Books" style="color: #0277BD;"/>
+                            <p:inputText label="#{settingBean.maxNumberForRent}" value="#{settingBean.maxNumberForRent}"/>
+                            <p:outputLabel value="Allowed Time For Users" style="color: #0277BD;"/>
+
+                            <p:panelGrid columns="4" styleClass="ui-noborder">
+
+                                <p:outputLabel value="From" style="color: #0277BD;"/>
+                                <p:calendar  pattern="HH:mm" timeOnly="true" timeZone="+2" value="#{settingBean.from}"/>
+                                <p:outputLabel value="To" style="color: #0277BD;"/>
+                                <p:calendar pattern="HH:mm" timeOnly="true" timeZone="+2" value="#{settingBean.to}"/>
+                            </p:panelGrid>
+                            <p:outputLabel value="#{settingBean.to}">
+                                <f:convertDateTime pattern="HH:mm" />                            
+                            </p:outputLabel>
+                            
+
+                            <p:commandButton actionListener="#{settingBean.saveData(settingBean.maxNumberForRent,settingBean.from,settingBean.to)}" value="Save"  style="background-color:#0277BD;" />
+
+                        </p:panelGrid>
+
+
+                    </h:form>
+                    <!--<p:button outcome="/dashboard" value="Home" style="display:inline-block;margin-top:5px"/>-->
+                </div>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

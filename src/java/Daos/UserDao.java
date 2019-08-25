@@ -30,7 +30,7 @@ public class UserDao {
             user.setPassword(resultSet.getString("password"));
             user.setType(resultSet.getString("type"));
             user.setUsername(resultSet.getString("username"));
-            user.setDob(resultSet.getDate("dateOfBirth"));
+            user.setDob(resultSet.getDate("dob"));
             users.add(user);
             System.out.println(users);
         }
@@ -45,7 +45,7 @@ public class UserDao {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
                     + "user=root&password=root");
 
-            String sql = "INSERT INTO library.users (name,password,userName,dateOfBirth,type) "
+            String sql = "INSERT INTO library.users (name,password,userName,dob,type) "
                     + "values (?,?,?,?,?)";
             preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, user.getName());
@@ -64,7 +64,7 @@ public class UserDao {
     public void editUser(User user) {
         try {
             String sql = "UPDATE library.users SET name =?, password =?, userName =?"
-                    + ", dateOfBirth =?, type =? "
+                    + ", dob =?, type =? "
                     + " WHERE id =?";
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"

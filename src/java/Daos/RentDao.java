@@ -2,7 +2,12 @@ package Daos;
 
 import Models.Book;
 import Models.Rent;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Date;
 import java.util.ArrayList;
 
 public class RentDao {
@@ -28,11 +33,13 @@ public class RentDao {
                 book.setId(resultSet.getInt("id"));
                 book.setName(resultSet.getString("name"));
                 book.setIsbn(resultSet.getInt("isbn"));
-                book.setAuthor(resultSet.getString("author"));
                 book.setGenre(resultSet.getString("genre"));
                 book.setTitle(resultSet.getString("title"));
                 book.setQauantity(resultSet.getInt("quantity"));
                 book.setNumberOfPages(resultSet.getInt("numberOfPages"));
+                book.setNumOfRent(resultSet.getInt("numOfRent"));
+                book.setAvailable(resultSet.getInt("available"));
+
                 books.add(book);
             }
             resultSet.close();
@@ -45,9 +52,82 @@ public class RentDao {
         }
     }
 
+    public ArrayList<Book> getAllRentedBooks() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+            String sql = "SELECT b.*,u.name as username,r.* FROM library.rent as r, library.books as b ,library.users as u where b.id=r.bookId and u.id=r.userId ;";
+
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql);
+            ArrayList<Book> books = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Book book = new Book();
+                book.setId(resultSet.getInt("id"));
+                book.setName(resultSet.getString("name"));
+                book.setIsbn(resultSet.getInt("isbn"));
+                book.setGenre(resultSet.getString("genre"));
+                book.setTitle(resultSet.getString("title"));
+                book.setQauantity(resultSet.getInt("quantity"));
+                book.setNumberOfPages(resultSet.getInt("numberOfPages"));
+                book.setUser_name(resultSet.getString("username"));
+                book.setFrom(resultSet.getDate("from"));
+                book.setTo(resultSet.getDate("to"));
+
+                books.add(book);
+            }
+            resultSet.close();
+            con.close();
+
+            return books;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+        public ArrayList<Book> getAllRentedBooksFiktered(Date from, Date to ) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+            String sql = " SELECT b.*,u.name as username,r.* FROM library.rent as r, library.books as b ,library.users as u\n" +
+" where b.id=r.bookId and u.id=r.userId and(r.from >= '"+new java.sql.Date(from.getTime())+"' and r.to <='"+new java.sql.Date(to.getTime())+"');";
+
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql);
+            ArrayList<Book> books = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Book book = new Book();
+                book.setId(resultSet.getInt("id"));
+                book.setName(resultSet.getString("name"));
+                book.setIsbn(resultSet.getInt("isbn"));
+                book.setGenre(resultSet.getString("genre"));
+                book.setTitle(resultSet.getString("title"));
+                book.setQauantity(resultSet.getInt("quantity"));
+                book.setNumberOfPages(resultSet.getInt("numberOfPages"));
+                book.setUser_name(resultSet.getString("username"));
+                book.setFrom(resultSet.getDate("from"));
+                book.setTo(resultSet.getDate("to"));
+
+                books.add(book);
+            }
+            resultSet.close();
+            con.close();
+
+            return books;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public boolean rentBook(Rent rent) {
         try {
-            int count = 0;
+            int countAQuantity = 0;
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
                     + "user=root&password=root");
@@ -63,14 +143,24 @@ public class RentDao {
                 preparedStatement.setDate(3, new java.sql.Date(rent.getFrom().getTime()));
                 preparedStatement.setDate(4, new java.sql.Date(rent.getTo().getTime()));
                 preparedStatement.execute();
-                count = minusCounter(rent.getBookId());
-                if (count != 0) {
-                    String sql2 = "UPDATE library.books SET quantity =? where id=?";
+                String sql3 = "DELETE FROM library.wishlist WHERE userid=? and bookId=?";
+
+                preparedStatement = con.prepareStatement(sql3);
+                preparedStatement.setInt(1, rent.getUserId());
+                preparedStatement.setInt(2, rent.getBookId());
+                preparedStatement.execute();
+                countAQuantity = minusCounter(rent.getBookId());
+                int countARent = addCounter(rent.getBookId());
+                int countAvailable = addAvailableCounter(rent.getBookId());
+                if (countAQuantity != 0) {
+                    String sql2 = "UPDATE library.books SET quantity =?,numOfRent=?,available=? where id=?";
                     preparedStatement = con.prepareStatement(sql2);
-                    preparedStatement.setInt(1, --count);
-                    preparedStatement.setInt(2, rent.getBookId());
+                    preparedStatement.setInt(1, --countAQuantity);
+                    preparedStatement.setInt(2, ++countARent);
+                    preparedStatement.setInt(3, +--countAvailable);
+                    preparedStatement.setInt(4, rent.getBookId());
                     preparedStatement.execute();
-                    con.close();
+                    preparedStatement.close();
 
                     return true;
                 } else {
@@ -127,7 +217,16 @@ public class RentDao {
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, bookId);
             preparedStatement.execute();
-            con.close();
+            int count = minusCounter(bookId);
+            int countAvailable = addAvailableCounter(bookId);
+            String sql2 = "UPDATE library.books SET quantity =?,available=? where id=?";
+            preparedStatement = con.prepareStatement(sql2);
+            preparedStatement.setInt(1, ++count);
+            preparedStatement.setInt(2, ++countAvailable);
+            preparedStatement.setInt(3, bookId);
+            preparedStatement.execute();
+            preparedStatement.close();
+            System.out.println("Daos.RentDao.removeRentedBook()");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -145,6 +244,59 @@ public class RentDao {
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 qunatity = resultSet.getInt("quantity");
+            }
+            con.close();
+
+            return qunatity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int addCounter(int bookId) {
+        try {
+            int qunatity = 0;
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            String sql = "SELECT * FROM library.books where id = " + bookId + "";
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                qunatity = resultSet.getInt("numOfRent");
+            }
+            con.close();
+
+            return qunatity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int rentedNow(int bookId) {
+        try {
+            return minusCounter(bookId) - addAvailableCounter(bookId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int addAvailableCounter(int bookId) {
+        try {
+            int qunatity = 0;
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            String sql = "SELECT * FROM library.books where id = " + bookId + "";
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                qunatity = resultSet.getInt("available");
             }
             con.close();
 

@@ -3,6 +3,7 @@ package Beans;
 import Daos.ListsDao;
 import Models.Book;
 import Models.Lists;
+import Models.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -27,8 +28,11 @@ public class ListBean {
     private List<String> titlesForRent = new ArrayList<>();
     private String genreForRent;
     private List<String> genresForRent = new ArrayList<>();
+    private int userForBlockList;
+    private List<User> usersForBlockList = new ArrayList<>();
+    private List<Integer> usersIdBlocked = new ArrayList<>();
+
     private ListsDao listsDao = new ListsDao();
-    private int userId;
     @ManagedProperty("#{loginBean}")
     LoginBean loginBean;
 
@@ -45,9 +49,37 @@ public class ListBean {
             authorsForRent = listsDao.fillAuthorsForList(loginBean.loggedIn_user.getId());
             titlesForRent = listsDao.fillTitlesForRentList(loginBean.loggedIn_user.getId());
             genresForRent = listsDao.fillGenresForList(loginBean.loggedIn_user.getId());
+            usersForBlockList = listsDao.fillUsersForBlockList();
+            usersIdBlocked = listsDao.fillUsersForBlockNamesList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public List<Integer> getUsersIdBlocked() {
+        return usersIdBlocked;
+    }
+
+    public void setUsersIdBlocked(List<Integer> usersIdBlocked) {
+        this.usersIdBlocked = usersIdBlocked;
+    }
+
+    
+
+    public int getUserForBlockList() {
+        return userForBlockList;
+    }
+
+    public void setUserForBlockList(int userForBlockList) {
+        this.userForBlockList = userForBlockList;
+    }
+
+    public List<User> getUsersForBlockList() {
+        return usersForBlockList;
+    }
+
+    public void setUsersForBlockList(List<User> usersForBlockList) {
+        this.usersForBlockList = usersForBlockList;
     }
 
     public String getAuthorForRent() {

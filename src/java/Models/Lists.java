@@ -12,8 +12,17 @@ public class Lists {
     private List<String> authorsForRent = new ArrayList<>();
     private List<String> titlesForRent = new ArrayList<>();
     private List<String> genresForRent = new ArrayList<>();
+    private List<User> usersForBlocking = new ArrayList<>();
 
     public Lists() {
+    }
+
+    public List<User> getUsersForBlocking() {
+        return usersForBlocking;
+    }
+
+    public void setUsersForBlocking(List<User> usersForBlocking) {
+        this.usersForBlocking = usersForBlocking;
     }
 
     public List<String> getAuthorsForRent() {

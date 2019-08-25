@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                    <h1>Authors Book Page</h1>
+                    <style>
+                        
+                        .dataGridCss > div {
+                            border: 0;
+                        }
+                    </style>
+
+                    <p:dataGrid var="author" value="#{listBean.authors}" columns="3" layout="grid" style="width: 70%;" 
+                                class="dataGridCss"
+                                    >
+                        <p:panel  style="text-align:center;width: 100%;margin-bottom: 0px"  >
+                                <h:panelGrid columns="2" style="text-align: left">
+                                    <dl>
+                                        <dt>
+                                            <p:outputLabel value="Books:" style="text-align: left"/>
+                                        </dt>
+                                        <ui:repeat var="books" value="#{bookBean.getallBookForAuthor(author)}">
+
+                                            <dd>
+                                                <p:commandLink value="#{books.name}" action="#{bookBean.goToBook(books.id)}" />
+                                            </dd>
+                                        </ui:repeat>
+
+                                    </dl>
+
+
+                                </h:panelGrid>
+                                <f:facet name="footer">
+<!--                                    <p:outputLabel value="Add Book"/>-->
+                                    <p:commandButton value="Add Book" style="margin-left: 2px;background-color: #03A9F4"/>
+                                </f:facet>
+                            <f:facet name="header">
+                                <p:outputLabel value="#{author}"/>
+                            </f:facet>
+
+                            </p:panel>
+                        </p:dataGrid>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>
