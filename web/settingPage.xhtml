@@ -20,9 +20,9 @@
                             <p:panelGrid columns="4" styleClass="ui-noborder">
 
                                 <p:outputLabel value="From" style="color: #0277BD;"/>
-                                <p:calendar  pattern="HH:mm" timeOnly="true" timeZone="+2" value="#{settingBean.from}"/>
+                                <p:calendar  pattern="HH:mm" timeOnly="true"  value="#{settingBean.from}"/>
                                 <p:outputLabel value="To" style="color: #0277BD;"/>
-                                <p:calendar pattern="HH:mm" timeOnly="true" timeZone="+2" value="#{settingBean.to}"/>
+                                <p:calendar pattern="HH:mm" timeOnly="true" value="#{settingBean.to}"/>
                             </p:panelGrid>
                             <p:outputLabel value="#{settingBean.to}">
                                 <f:convertDateTime pattern="HH:mm" />                            

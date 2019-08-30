@@ -3,6 +3,9 @@ package Beans;
 import Daos.BookDao;
 import Daos.RentDao;
 import Models.Book;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -11,7 +14,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.CloseEvent;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.MoveEvent;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 @ViewScoped
@@ -110,7 +115,8 @@ public class BookBean {
     public void filter(String author, String title, String genre) {
         allBooksForUser = bookDao.getAllBooksFilterization(author, title, genre);
     }
-      public void filterFroAdmin(String author, String title, String genre) {
+
+    public void filterFroAdmin(String author, String title, String genre) {
         allBooks = bookDao.getAllBooksFilterizationForAdmin(author, title, genre);
     }
 
@@ -132,6 +138,11 @@ public class BookBean {
 
     public String goToBook(int id) {
         return "bookDetailes.xhtml?faces-redirect=true&id=" + id;
+    }
+
+    public String goToUpload(int id) {
+        return "uploadAttachementforbook.xhtml?faces-redirect=true&id=" + id;
+
     }
 
 //    public ArrayList<Book> getWishListBooks(int userId) {
@@ -164,7 +175,7 @@ public class BookBean {
     }
 
     public String getAuthors(int Id) {
-        
+
         System.err.println(Id);
         ArrayList<String> authors = new ArrayList<>();
         authors = bookDao.getAllAuthorsForBook(Id);
@@ -178,6 +189,7 @@ public class BookBean {
     }
 
     public Book getBookById(int bookId) {
+        System.out.println("Beans.BookBean.getBookById() id from it -==" + bookId);
         return bookDao.getBookById(bookId);
     }
 
@@ -194,7 +206,7 @@ public class BookBean {
         }
     }
 
-    public void fillEditBookData(String book) {
+    public void fillEditBookData(int book) {
         System.err.println("from init => " + book);
 //        oldBook = getBookById(id);
 //        editedBook.setId(oldBook.getId());
@@ -226,9 +238,11 @@ public class BookBean {
         }
 
     }
-    public int rentedNow(int bookId){
+
+    public int rentedNow(int bookId) {
         return rentDao.rentedNow(bookId);
     }
-    
+
+  
 
 }

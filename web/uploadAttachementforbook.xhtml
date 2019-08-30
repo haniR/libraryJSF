@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Rental Page</h1>
+                    <h:form enctype="multipart/form-data">
+                        <h:panelGrid columns="4" styleClass="ui-noborder" cellspacing="30px">
+                            <p:outputLabel value="Attachement = " style="color: #0277BD"/>
+                            <p:growl id="messages" showDetail="true" />
+                            <p:fileUpload value="#{documentBean.file}" mode="simple" skinSimple="true"/>
+                            <p:commandButton value="Upload" ajax="false" action="#{documentBean.upload()}" />
+                        </h:panelGrid>
+                        <pe:documentViewer height="500" url="http://localhost:8080/attachments/Computer-Networking-A-Top-Down-Approach-6th-edition.pdf" />  
+                    </h:form>
+                    <p:button outcome="/dashboard" value="Home" style="display:inline-block;margin-top:5px"/>
+                </div>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

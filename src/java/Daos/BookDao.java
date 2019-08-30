@@ -44,6 +44,22 @@ public class BookDao {
 
     }
 
+    public void uploadFile(String fileName) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            String sql = " INSERT INTO `library`.`documents` (`src`) VALUES('"+fileName+"')";
+            preparedStatement = con.prepareStatement(sql);
+            preparedStatement.execute();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error Happened");
+        }
+
+    }
+
     public ArrayList<Book> getAllBooksFilterization(String author, String title, String genre) {
         try {
             System.out.println(" title = " + title);

@@ -73,10 +73,11 @@ public class LoginBean {
             return null;
         } else {
             if (loggedIn_user.getType().equals("user")) {
-                loginTime();
-                logggedIn_user_type = true;
-
-                return "userDashboard?faces-redirect=true";
+                if (loginTime(settingBean.from, settingBean.to)) {
+                    logggedIn_user_type = true;
+                    return "userDashboard?faces-redirect=true";
+                }
+                return "login?faces-redirect=true";
 
             } else {
                 logggedIn_user_type = false;
@@ -96,34 +97,33 @@ public class LoginBean {
 
     }
 
-    public void loginTime() {
+    public boolean loginTime(Date from, Date to) {
         try {
-            String string1 = "08:00";
-            Date time1 = new SimpleDateFormat("HH:mm").parse(string1);
-            Calendar calendar1 = Calendar.getInstance();
-            calendar1.setTime(time1);
-            calendar1.set(Calendar.DATE, 1);
 
-            String string2 = "07:00";
-            Date time2 = new SimpleDateFormat("HH:mm").parse(string2);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(from);
+            
+            calendar.set(2019, 01, 01);
             Calendar calendar2 = Calendar.getInstance();
-            calendar2.setTime(time2);
-            calendar2.set(Calendar.DATE, 1);
-
-            String someRandomTime = new Date().toString();
-            Date d = new SimpleDateFormat("HH:mm").parse(someRandomTime);
+            calendar2.setTime(to);
+            calendar2.set(2019, 01, 01);
             Calendar calendar3 = Calendar.getInstance();
-            calendar3.setTime(d);
-            calendar3.set(Calendar.DATE, 1);
+            calendar3.setTime(new Date());
+            calendar3.set(2019, 01, 01);
 
-            Date x = calendar3.getTime();
-            if (x.after(calendar1.getTime()) && x.before(calendar2.getTime())) {
-                System.out.println(true);
-                                System.out.println("/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/**/");
-
+            if (calendar.compareTo(calendar3) <= 0) {
+                if (calendar2.compareTo(calendar3) >= 0) {
+                    System.out.println("Beans.LoginBean.loginTime()");
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
             }
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
 
     }

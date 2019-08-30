@@ -4,18 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/MyLibraryJSF/web/bookDetailes.xhtml</file>
-            <file>file:/D:/MyLibraryJSF/src/java/Daos/BookDao.java</file>
-            <file>file:/D:/MyLibraryJSF/web/bookCatalog.xhtml</file>
-            <file>file:/D:/MyLibraryJSF/web/authorsBook.xhtml</file>
-            <file>file:/D:/MyLibraryJSF/web/noAccessRent.xhtml</file>
-            <file>file:/D:/MyLibraryJSF/src/java/Beans/UserBean.java</file>
             <file>file:/D:/MyLibraryJSF/web/WEB-INF/menu.xhtml</file>
-            <file>file:/D:/MyLibraryJSF/web/dashboard.xhtml</file>
-            <file>file:/D:/MyLibraryJSF/web/rentalPage.xhtml</file>
-            <file>file:/D:/MyLibraryJSF/web/wishListUser.xhtml</file>
+            <file>file:/D:/MyLibraryJSF/src/java/Daos/BookDao.java</file>
+            <file>file:/D:/MyLibraryJSF/src/java/Beans/SettingBean.java</file>
+            <file>file:/D:/MyLibraryJSF/web/settingPage.xhtml</file>
+            <file>file:/D:/MyLibraryJSF/src/java/Beans/DocumentBean.java</file>
+            <file>file:/D:/MyLibraryJSF/web/uploadAttachementforbook.xhtml</file>
+            <file>file:/D:/MyLibraryJSF/web/authorsBook.xhtml</file>
             <file>file:/D:/MyLibraryJSF/src/java/Models/Book.java</file>
-            <file>file:/D:/MyLibraryJSF/web/newRentalTransaction.xhtml</file>
-            <file>file:/D:/MyLibraryJSF/web/membersPage.xhtml</file>
+            <file>file:/D:/MyLibraryJSF/src/java/Beans/LoginBean.java</file>
             <file>file:/D:/MyLibraryJSF/src/java/Beans/BookBean.java</file>
         </group>
     </open-files>
