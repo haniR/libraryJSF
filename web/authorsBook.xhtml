@@ -8,44 +8,68 @@
     <ui:define name="content">
         <div class="ui-g">
             <div class="ui-g-12">
-                    <h1>Authors Book Page</h1>
-                    <style>
-                        
-                        .dataGridCss > div {
-                            border: 0;
-                        }
-                    </style>
+                <h1>Authors Book Page</h1>
+                <style>
 
+                    .dataGridCss > div {
+                        border: 0;
+                    }
+                </style>
+                <h:form id="authorsForm">
                     <p:dataGrid var="author" value="#{listBean.authors}" columns="3" layout="grid" style="width: 70%;" 
                                 class="dataGridCss"
-                                    >
+                                >
                         <p:panel  style="text-align:center;width: 100%;margin-bottom: 0px"  >
-                                <h:panelGrid columns="2" style="text-align: left">
-                                    <dl>
-                                        <dt>
-                                            <p:outputLabel value="Books:" style="text-align: left"/>
-                                        </dt>
-                                        <ui:repeat var="books" value="#{bookBean.getallBookForAuthor(author)}">
+                            <h:panelGrid columns="2" style="text-align: left">
+                                <dl>
+                                    <dt>
+                                        <p:outputLabel value="Books:" style="text-align: left"/>
+                                    </dt>
+                                    <ui:repeat var="books" value="#{bookBean.getallBookForAuthor(author)}">
 
-                                            <dd>
-                                                <p:commandLink value="#{books.name}" action="#{bookBean.goToBook(books.id)}" />
-                                            </dd>
-                                        </ui:repeat>
+                                        <dd>
+                                            <p:commandLink value="#{books.name}" action="#{bookBean.goToBook(books.id)}" />
+                                        </dd>
+                                    </ui:repeat>
 
-                                    </dl>
+                                </dl>
 
 
-                                </h:panelGrid>
-                                <f:facet name="footer">
-<!--                                    <p:outputLabel value="Add Book"/>-->
-                                    <p:commandButton value="Add Book" style="margin-left: 2px;background-color: #03A9F4"/>
-                                </f:facet>
+                            </h:panelGrid>
+                            <f:facet name="footer">
+                                <!--                                    <p:outputLabel value="Add Book"/>-->
+                                <p:commandButton value="Add Book" style="margin-left: 2px;background-color: #03A9F4;" onclick="PF('addModel').show();" action="#{bookBean.saveAuthor(author)}"/>
+                            </f:facet>
                             <f:facet name="header">
                                 <p:outputLabel value="#{author}"/>
                             </f:facet>
 
-                            </p:panel>
-                        </p:dataGrid>
+                        </p:panel>
+                    </p:dataGrid>
+
+                </h:form>
+                <h:form id="addUser">
+                    <p:dialog header="Add User" widgetVar="addModel" modal="true" >
+                        <p:panelGrid columns="4" styleClass="ui-noborder">
+
+                            <h:outputText value="ISBN = " style="color: #0277BD"/>
+                            <p:inputText value="#{bookBean.newBook.isbn}" />
+                            <h:outputText value="Name = " style="color: #0277BD"/>
+                            <p:inputText value="#{bookBean.newBook.name}" />
+                            <h:outputText value="Number Of Pages = " style="color: #0277BD"/>
+                            <p:inputText value="#{bookBean.newBook.numberOfPages}" />
+                            <h:outputText value="Genre = " style="color: #0277BD"/>
+                            <p:inputText value="#{bookBean.newBook.genre}"/>
+                            <h:outputText value="Title = " style="color: #0277BD"/>
+                            <p:inputText  value="#{bookBean.newBook.title}"/>
+                            <h:outputText value="Quantity = " style="color: #0277BD"/>
+                            <p:inputText  value="#{bookBean.newBook.qauantity}"/>
+
+                            <p:commandButton value="Add "  actionListener="#{bookBean.addBook()}" 
+                                             update="authorsForm" onclick="PF('addModel').hide()" style="background-color: #0277BD"/>
+                        </p:panelGrid>
+                    </p:dialog>
+                </h:form>
             </div>
         </div>
 

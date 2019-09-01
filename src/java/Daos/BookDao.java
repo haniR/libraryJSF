@@ -50,7 +50,7 @@ public class BookDao {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
                     + "user=root&password=root");
 
-            String sql = " INSERT INTO `library`.`documents` (`src`) VALUES('"+fileName+"')";
+            String sql = " INSERT INTO `library`.`documents` (`src`) VALUES('" + fileName + "')";
             preparedStatement = con.prepareStatement(sql);
             preparedStatement.execute();
         } catch (Exception e) {
@@ -501,7 +501,7 @@ public class BookDao {
                     + "user=root&password=root");
 
             String sql = "INSERT INTO library.books (name,isbn,numberOfPages,quantity,title,genre,available) "
-                    + "values (?,?,?,?,?)";
+                    + "values (?,?,?,?,?,?,?)";
             preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, book.getName());
             preparedStatement.setInt(2, book.getIsbn());
@@ -512,9 +512,36 @@ public class BookDao {
             preparedStatement.setInt(7, book.getQauantity());
 
             preparedStatement.execute();
+            System.out.println("Daos.BookDao.addBook() passed");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Error Happened");
+        }
+
+    }
+
+    public int getBooktId(int isbn) {
+        try {
+            int id = 0;
+
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+            String sql2 = "select id from library.books where isbn = '" + isbn + "' ";
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql2);
+            while (resultSet.next()) {
+                id = resultSet.getInt("id");
+            }
+            System.out.println("Daos.BookDao.setAuthor() passed");
+            System.out.println("Daos.BookDao.getAuthorId() id =" + id);
+
+            return id;
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error Happened");
+            return 0;
         }
 
     }
@@ -531,6 +558,54 @@ public class BookDao {
             preparedStatement.execute();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+        }
+
+    }
+
+    public int getAuthorId(String author) {
+
+        try {
+            int id = 0;
+
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+            String sql2 = "select id from library.author where name = '" + author + "' ";
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql2);
+            while (resultSet.next()) {
+                id = resultSet.getInt("id");
+            }
+            System.out.println("Daos.BookDao.setAuthor() passed");
+            System.out.println("Daos.BookDao.getAuthorId() id =" + id);
+
+            return id;
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error Happened");
+            return 0;
+        }
+    }
+
+    public void setAuthor(String author, int isbn) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            String sql = "INSERT INTO library.author_books (bookId,authorId) "
+                    + "values (?,?)";
+            int id = getAuthorId(author);
+            int bookId = getBooktId(isbn);
+            preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, bookId);
+            preparedStatement.setInt(2, id);
+            preparedStatement.execute();
+            System.out.println("Daos.BookDao.setAuthor() passed");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error Happened");
         }
 
     }

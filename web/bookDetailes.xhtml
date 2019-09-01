@@ -10,10 +10,10 @@
             <div class="ui-g-12">
                 <div class="card">
                     <h1>Book Details Page</h1>
-                    <h:form>
+                    <h:form id="bookForm">
 
                         <p:repeat var="book" value="#{bookBean.getBookById(param['id'])}" >
-
+                            
                             <h:panelGrid columns="4" styleClass="ui-noborder" cellspacing="30px">
                                 <p:outputLabel value="ISBN" style="color: #0277BD; "/>
                                 <p:inputText readonly="true" value="#{book.isbn}" />
@@ -31,8 +31,8 @@
                                 <p:outputLabel value="Author = " style="color: #0277BD"/>
                                 <p:inputText readonly="true" value="#{bookBean.getAuthors(param['id'])}" />
                                 <p:commandButton value="Edit" oncomplete="PF('editModel').show()"
-                                                 actionListener="#{bookBean.fillEditBookData(param['id'])}" />
-                                <p:commandButton value="upload" action="#{bookBean.goToUpload(book.id)}"/>
+                                                 actionListener="#{bookBean.fillEditBookData()}" update="editBook"/>
+<!--                                <p:commandButton value="upload" action="#{bookBean.goToUpload(book.id)}"/>-->
                             </h:panelGrid>  
 
                         </p:repeat>
@@ -59,9 +59,6 @@
                                 <p:commandButton value="Edit"  actionListener="#{bookBean.saveData()}" onclick="PF('editModel').hide()"  
                                                  style="background-color:#0277BD;column-width:auto "  oncomplete="PF('bookDialog').show()"
                                                  title="View Detail" update="bookDialog"/>
-                                <p:growl id="messages" showDetail="true" />
-
-                                <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
                             </p:panelGrid>
                         </p:dialog>
                         <p:dialog header="Book Information" widgetVar="bookDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" style="text-align: center">

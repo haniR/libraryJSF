@@ -215,7 +215,7 @@ public class ListsDao {
             statement = con.createStatement();
             String sql = "SELECT DISTINCT a.name\n"
                     + "FROM library.books as b ,library.author as a,library.author_books as ab where \n"
-                    + "b.id not In (select bookId from library.rent as r  where r.userId=1  ) \n"
+                    + "b.id not In (select bookId from library.rent as r  where r.userId="+userId+"  ) \n"
                     + "and b.id=ab.bookId \n"
                     + "and a.id=ab.authorId  \n"
                     + "and b.quantity >0\n"

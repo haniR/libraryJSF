@@ -87,13 +87,14 @@ public class RentDao {
             return null;
         }
     }
-        public ArrayList<Book> getAllRentedBooksFiktered(Date from, Date to ) {
+
+    public ArrayList<Book> getAllRentedBooksFiktered(Date from, Date to) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
                     + "user=root&password=root");
-            String sql = " SELECT b.*,u.name as username,r.* FROM library.rent as r, library.books as b ,library.users as u\n" +
-" where b.id=r.bookId and u.id=r.userId and(r.from >= '"+new java.sql.Date(from.getTime())+"' and r.to <='"+new java.sql.Date(to.getTime())+"');";
+            String sql = " SELECT b.*,u.name as username,r.* FROM library.rent as r, library.books as b ,library.users as u\n"
+                    + " where b.id=r.bookId and u.id=r.userId and(r.from >= '" + new java.sql.Date(from.getTime()) + "' and r.to <='" + new java.sql.Date(to.getTime()) + "');";
 
             statement = con.createStatement();
             resultSet = statement.executeQuery(sql);
@@ -123,7 +124,6 @@ public class RentDao {
             return null;
         }
     }
-
 
     public boolean rentBook(Rent rent) {
         try {
@@ -276,16 +276,34 @@ public class RentDao {
         }
     }
 
+    /*
+                select count(id) FROM library.rent where bookId =1;
+
+     */
     public int rentedNow(int bookId) {
         try {
-            return minusCounter(bookId) - addAvailableCounter(bookId);
+            int rentedNow = 0;
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/library?"
+                    + "user=root&password=root");
+
+            String sql = "select count(id) FROM library.rent where bookId = " + bookId + "";
+            statement = con.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                rentedNow = resultSet.getInt("count(id)");
+            }
+            con.close();
+
+            return rentedNow;
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
-    }
+    
+}
 
-    public int addAvailableCounter(int bookId) {
+public int addAvailableCounter(int bookId) {
         try {
             int qunatity = 0;
             Class.forName("com.mysql.jdbc.Driver");

@@ -31,10 +31,20 @@ public class BookBean {
     Book newBook = new Book();
     Book oldBook = new Book();
     Book editedBook = new Book();
+    private int loginId;
+    private String authorForAdd;
 
     private int userId;
     @ManagedProperty("#{loginBean}")
     LoginBean loginBean;
+
+    public int getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(int loginId) {
+        this.loginId = loginId;
+    }
 
     public Book getNewBook() {
         return newBook;
@@ -174,11 +184,11 @@ public class BookBean {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public String getAuthors(int Id) {
-
-        System.err.println(Id);
+    public String getAuthors(int id) {
+        loginId = id;
+        System.err.println(id);
         ArrayList<String> authors = new ArrayList<>();
-        authors = bookDao.getAllAuthorsForBook(Id);
+        authors = bookDao.getAllAuthorsForBook(id);
         return String.join("  ,  ", authors);
     }
 
@@ -206,17 +216,18 @@ public class BookBean {
         }
     }
 
-    public void fillEditBookData(int book) {
-        System.err.println("from init => " + book);
-//        oldBook = getBookById(id);
-//        editedBook.setId(oldBook.getId());
-//        editedBook.setName(oldBook.getName());
-//        editedBook.setGenre(oldBook.getGenre());
-//        editedBook.setTitle(oldBook.getTitle());
-//        editedBook.setIsbn(oldBook.getIsbn());
-//        editedBook.setNumberOfPages(oldBook.getNumberOfPages());
-//        editedBook.setQauantity(oldBook.getQauantity());
-        System.err.println(book);
+    public void fillEditBookData() {
+        oldBook = getBookById(loginId);
+        editedBook.setId(oldBook.getId());
+        editedBook.setName(oldBook.getName());
+        editedBook.setGenre(oldBook.getGenre());
+        editedBook.setTitle(oldBook.getTitle());
+        editedBook.setIsbn(oldBook.getIsbn());
+        editedBook.setNumberOfPages(oldBook.getNumberOfPages());
+        editedBook.setQauantity(oldBook.getQauantity());
+        editedBook.setAvailable(oldBook.getAvailable());
+        editedBook.setNumOfRent(oldBook.getNumOfRent());
+        System.out.println("Beans.BookBean.fillEditBookData() where id = " + loginId);
     }
 
     public void saveData() {
@@ -243,6 +254,22 @@ public class BookBean {
         return rentDao.rentedNow(bookId);
     }
 
-  
+    public void addBook() {
+        try {
+            System.err.println(" add Book func");
+            bookDao.addBook(newBook);
+            bookDao.setAuthor(authorForAdd, newBook.getIsbn());
+
+            init();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void saveAuthor(String author) {
+        authorForAdd = author;
+    }
 
 }

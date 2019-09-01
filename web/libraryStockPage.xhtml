@@ -42,7 +42,7 @@
                         </p:column>
 
                         <p:column headerText="Name" style="color: #0277BD">
-                            <h:outputText value="#{allBook.name}" />
+                            <p:commandLink value="#{allBook.name}" action="#{bookBean.goToBook(allBook.id)}" style="color: #0277BD"/>
                         </p:column>
                         <p:column headerText="ISBN" style="color: #0277BD">
                             <h:outputText value="#{allBook.isbn}" />
@@ -50,7 +50,7 @@
                         <p:column headerText="Number Of Pages" style="color: #0277BD">
                             <h:outputText value="#{allBook.numberOfPages}" />
                         </p:column>
-                        
+
                         <p:column headerText="Title" style="color: #0277BD">
                             <h:outputText value="#{allBook.title}" />
                         </p:column>
@@ -67,7 +67,7 @@
                             <h:outputText value="#{allBook.numOfRent}" />
                         </p:column>
                         <p:column headerText="Available" style="color: #0277BD">
-                            <h:outputText value="#{allBook.available}" />
+                            <h:outputText value="#{allBook.qauantity - bookBean.rentedNow(allBook.id)}" />
                         </p:column>
                         <p:column headerText="Rented Now" style="color: #0277BD">
                             <h:outputText value="#{bookBean.rentedNow(allBook.id)}" />
